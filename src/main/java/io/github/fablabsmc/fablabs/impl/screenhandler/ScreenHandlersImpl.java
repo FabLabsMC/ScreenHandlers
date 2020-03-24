@@ -30,7 +30,7 @@ public final class ScreenHandlersImpl implements ScreenHandlers {
 	public <T extends Container> ContainerType<T> createType(ScreenHandlers.Factory<T> factory) {
 		try {
 			ContainerType<T> result = (ContainerType<T>) CONSTRUCTOR.get().invoke(null);
-			((ExtendedScreenHandlerType<T>) result).fablabs_setFactory(factory);
+			((ScreenHandlerTypeBridge<T>) result).fablabs_setFactory(factory);
 			return result;
 		} catch (Throwable t) {
 			throw new RuntimeException("Could not construct ScreenHandlerType!", t);

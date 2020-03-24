@@ -1,14 +1,14 @@
 package io.github.fablabsmc.fablabs.mixin.screenhandler;
 
 import io.github.fablabsmc.fablabs.api.screenhandler.v1.ScreenHandlers;
-import io.github.fablabsmc.fablabs.impl.screenhandler.ExtendedScreenHandlerType;
+import io.github.fablabsmc.fablabs.impl.screenhandler.ScreenHandlerTypeBridge;
 import org.spongepowered.asm.mixin.Mixin;
 
 import net.minecraft.container.Container;
 import net.minecraft.container.ContainerType;
 
 @Mixin(ContainerType.class)
-public class ScreenHandlerTypeMixin<T extends Container> implements ExtendedScreenHandlerType<T> {
+public class ScreenHandlerTypeMixin<T extends Container> implements ScreenHandlerTypeBridge<T> {
 	private ScreenHandlers.Factory<T> fablabs_factory = null;
 
 	@Override
