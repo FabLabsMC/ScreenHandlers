@@ -20,7 +20,7 @@ public final class FabricHandledScreensImpl implements FabricHandledScreens {
 
 	private static final Map<ContainerType<?>, FabricHandledScreens.Factory<?, ?>> FACTORIES = new HashMap<>();
 
-	private FabricHandledScreensImpl() {}
+	private FabricHandledScreensImpl() { }
 
 	public static FabricHandledScreens.Factory<?, ?> getFactory(ContainerType<?> type) {
 		Objects.requireNonNull(type, "type is null");

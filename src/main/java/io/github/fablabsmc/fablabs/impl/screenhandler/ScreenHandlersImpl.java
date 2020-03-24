@@ -3,13 +3,11 @@ package io.github.fablabsmc.fablabs.impl.screenhandler;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Constructor;
-import java.util.function.BiFunction;
 
 import io.github.fablabsmc.fablabs.api.screenhandler.v1.ScreenHandlers;
 
 import net.minecraft.container.Container;
 import net.minecraft.container.ContainerType;
-import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.Lazy;
 
 public final class ScreenHandlersImpl implements ScreenHandlers {
@@ -25,11 +23,11 @@ public final class ScreenHandlersImpl implements ScreenHandlers {
 		}
 	});
 
-	private ScreenHandlersImpl() {}
+	private ScreenHandlersImpl() { }
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends Container> ContainerType<T> createType(BiFunction<? super Integer, ? super PlayerInventory, ? extends T> factory) {
+	public <T extends Container> ContainerType<T> createType(ScreenHandlers.Factory<T> factory) {
 		try {
 			ContainerType<T> result = (ContainerType<T>) CONSTRUCTOR.get().invoke(null);
 			((ExtendedScreenHandlerType<T>) result).fablabs_setFactory(factory);

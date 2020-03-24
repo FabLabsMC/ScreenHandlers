@@ -20,7 +20,7 @@ import net.minecraft.text.Text;
 public class HandledScreensMixin {
 	@SuppressWarnings({"rawtypes", "unchecked"})
 	@Inject(method = "open", at = @At("HEAD"), cancellable = true)
-	private static <T extends Container> void onOpen(ContainerType<T> type, MinecraftClient client, int syncId, Text title, CallbackInfo info) {
+	private static <T extends Container> void fablabs_onOpen(ContainerType<T> type, MinecraftClient client, int syncId, Text title, CallbackInfo info) {
 		if (type != null) {
 			FabricHandledScreens.Factory factory = FabricHandledScreensImpl.getFactory(type);
 
