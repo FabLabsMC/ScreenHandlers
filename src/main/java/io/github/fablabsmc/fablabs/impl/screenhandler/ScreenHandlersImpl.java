@@ -18,6 +18,7 @@ public enum ScreenHandlersImpl implements ScreenHandlers {
 	private final Lazy<MethodHandle> constructor = new Lazy<>(() -> {
 		try {
 			Constructor<?> ctor = ContainerType.class.getDeclaredConstructors()[0];
+			ctor.setAccessible(true);
 			return MethodHandles.lookup().unreflectConstructor(ctor);
 		} catch (IllegalAccessException e) {
 			throw new IllegalStateException("Could not find private ScreenHandlerType constructor!", e);
