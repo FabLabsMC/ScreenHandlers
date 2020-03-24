@@ -4,10 +4,10 @@
   "package": "io.github.fablabsmc.fablabs.mixin.screenhandler",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "ScreenHandlerTypeAccessor",
     "ScreenHandlerTypeMixin"
   ],
   "client": [
+    "client.HandledScreensMixin",
     "client.ScreenHandlerTypeMixin"
   ],
   "injectors": {
