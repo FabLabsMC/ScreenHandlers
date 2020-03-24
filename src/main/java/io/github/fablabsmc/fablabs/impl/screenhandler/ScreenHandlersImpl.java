@@ -12,10 +12,10 @@ import net.minecraft.container.ContainerType;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.Lazy;
 
-public enum ScreenHandlersImpl implements ScreenHandlers {
-	INSTANCE;
+public final class ScreenHandlersImpl implements ScreenHandlers {
+	public static final ScreenHandlersImpl INSTANCE = new ScreenHandlersImpl();
 
-	private final Lazy<MethodHandle> constructor = new Lazy<>(() -> {
+	private static final Lazy<MethodHandle> CONSTRUCTOR = new Lazy<>(() -> {
 		try {
 			Constructor<?> ctor = ContainerType.class.getDeclaredConstructors()[0];
 			ctor.setAccessible(true);
@@ -25,11 +25,13 @@ public enum ScreenHandlersImpl implements ScreenHandlers {
 		}
 	});
 
+	private ScreenHandlersImpl() {}
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends Container> ContainerType<T> createType(BiFunction<? super Integer, ? super PlayerInventory, ? extends T> factory) {
 		try {
-			ContainerType<T> result = (ContainerType<T>) constructor.get().invoke(null);
+			ContainerType<T> result = (ContainerType<T>) CONSTRUCTOR.get().invoke(null);
 			((ExtendedScreenHandlerType<T>) result).fablabs_setFactory(factory);
 			return result;
 		} catch (Throwable t) {

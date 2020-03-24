@@ -22,7 +22,7 @@ public class HandledScreensMixin {
 	@Inject(method = "open", at = @At("HEAD"), cancellable = true)
 	private static <T extends Container> void onOpen(ContainerType<T> type, MinecraftClient client, int syncId, Text title, CallbackInfo info) {
 		if (type != null) {
-			FabricHandledScreens.Factory factory = ((FabricHandledScreensImpl) FabricHandledScreens.INSTANCE).getFactory(type);
+			FabricHandledScreens.Factory factory = FabricHandledScreensImpl.getFactory(type);
 
 			if (factory != null) {
 				PlayerEntity player = client.player;

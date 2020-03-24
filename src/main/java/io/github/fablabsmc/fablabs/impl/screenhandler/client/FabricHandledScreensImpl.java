@@ -15,19 +15,21 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 @Environment(EnvType.CLIENT)
-public enum FabricHandledScreensImpl implements FabricHandledScreens {
-	INSTANCE;
+public final class FabricHandledScreensImpl implements FabricHandledScreens {
+	public static final FabricHandledScreensImpl INSTANCE = new FabricHandledScreensImpl();
 
-	private final Map<ContainerType<?>, FabricHandledScreens.Factory<?, ?>> factories = new HashMap<>();
+	private static final Map<ContainerType<?>, FabricHandledScreens.Factory<?, ?>> FACTORIES = new HashMap<>();
 
-	public FabricHandledScreens.Factory<?, ?> getFactory(ContainerType<?> type) {
+	private FabricHandledScreensImpl() {}
+
+	public static FabricHandledScreens.Factory<?, ?> getFactory(ContainerType<?> type) {
 		Objects.requireNonNull(type, "type is null");
 
-		return factories.get(type);
+		return FACTORIES.get(type);
 	}
 
 	@Override
 	public <T extends Container, U extends Screen & ContainerProvider<T>> void register(ContainerType<T> type, Factory<T, U> screenFactory) {
-		factories.put(type, screenFactory);
+		FACTORIES.put(type, screenFactory);
 	}
 }
