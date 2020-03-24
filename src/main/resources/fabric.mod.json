@@ -4,18 +4,13 @@
   "version": "${version}",
 
   "name": "FabLabs ${libname} version ${libver}",
-  "icon": "assets/blueprint/icon.png",
-  "description": "Template for starting out FabLabs drafts",
+  "icon": "assets/screen-handlers/icon.png",
+  "description": "FabLabs API for creating screen handlers.",
   "license": "MIT",
   "contact": {
     "sources": "https://github.com/${repo}"
   },
   "environment": "*",
-  "entrypoints": {
-    "main": [
-      "io.github.fablabsmc.fablabs.api.blueprint.v1.Blueprint"
-    ]
-  },
   "mixins": [
     "mixins.${libname}.json"
   ],

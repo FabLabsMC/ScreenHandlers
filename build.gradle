@@ -41,7 +41,7 @@ def modRepo
 if (System.env.REPO_NAME) {
 	modRepo = System.env.REPO_NAME
 } else {
-	modRepo = "FabLabsMC/${project.library_name}"
+	modRepo = "FabLabsMC/${project.repo_name}"
 }
 
 minecraft {
