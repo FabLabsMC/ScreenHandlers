@@ -1,6 +1,6 @@
 package io.github.fablabsmc.fablabs.impl.screenhandler.example.item;
 
-import io.github.fablabsmc.fablabs.api.screenhandler.v1.ScreenHandlers;
+import io.github.fablabsmc.fablabs.api.screenhandler.v1.NetworkedScreenHandlerFactory;
 import io.github.fablabsmc.fablabs.impl.screenhandler.example.screen.BagScreenHandler;
 import net.minecraft.container.NameableContainerFactory;
 import net.minecraft.container.SimpleNamedContainerFactory;
@@ -22,10 +22,10 @@ public class BagItem extends Item {
 	@Override
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 		ItemStack stack = user.getStackInHand(hand);
-		ScreenHandlers.INSTANCE.open(user, createScreenHandlerFactory(stack, null), buf -> {
+		user.openContainer(NetworkedScreenHandlerFactory.of(createScreenHandlerFactory(stack, null), buf -> {
 			buf.writeBoolean(false);
 			buf.writeBlockPos(BlockPos.ORIGIN);
-		});
+		}));
 		return TypedActionResult.success(stack);
 	}
 
@@ -34,10 +34,10 @@ public class BagItem extends Item {
 		PlayerEntity user = context.getPlayer();
 		ItemStack stack = user.getStackInHand(context.getHand());
 		BlockPos pos = context.getBlockPos();
-		ScreenHandlers.INSTANCE.open(user, createScreenHandlerFactory(stack, pos), buf -> {
+		user.openContainer(NetworkedScreenHandlerFactory.of(createScreenHandlerFactory(stack, pos), buf -> {
 			buf.writeBoolean(true);
 			buf.writeBlockPos(pos);
-		});
+		}));
 		return ActionResult.SUCCESS;
 	}
 

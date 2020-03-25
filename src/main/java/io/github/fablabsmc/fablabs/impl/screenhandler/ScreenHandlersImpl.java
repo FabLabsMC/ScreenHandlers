@@ -3,16 +3,16 @@ package io.github.fablabsmc.fablabs.impl.screenhandler;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Constructor;
-import java.util.function.Consumer;
+import java.util.Objects;
+import java.util.OptionalInt;
 
+import io.github.fablabsmc.fablabs.api.screenhandler.v1.NetworkedScreenHandlerFactory;
 import io.github.fablabsmc.fablabs.api.screenhandler.v1.ScreenHandlers;
 import io.github.fablabsmc.fablabs.mixin.screenhandler.ServerPlayerEntityAccessor;
 import io.netty.buffer.Unpooled;
 
 import net.minecraft.container.Container;
 import net.minecraft.container.ContainerType;
-import net.minecraft.container.NameableContainerFactory;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
@@ -35,7 +35,8 @@ public final class ScreenHandlersImpl implements ScreenHandlers {
 		}
 	});
 
-	private ScreenHandlersImpl() { }
+	private ScreenHandlersImpl() {
+	}
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -63,37 +64,36 @@ public final class ScreenHandlersImpl implements ScreenHandlers {
 		}
 	}
 
-	@Override
-	public void open(PlayerEntity player, NameableContainerFactory factory, Consumer<PacketByteBuf> packetWriter) {
-		if (player instanceof ServerPlayerEntity) {
-			ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
-			ServerPlayerEntityAccessor bridge = (ServerPlayerEntityAccessor) player;
+	public OptionalInt open(ServerPlayerEntity player, NetworkedScreenHandlerFactory factory) {
+		Objects.requireNonNull(player, "player is null");
+		Objects.requireNonNull(factory, "factory is null");
+		ServerPlayerEntityAccessor bridge = (ServerPlayerEntityAccessor) player;
 
-			if (serverPlayer.container != serverPlayer.playerContainer) {
-				serverPlayer.closeContainer();
-			}
-
-			bridge.callIncrementContainerSyncId();
-			int syncId = bridge.getContainerSyncId();
-			Container handler = factory.createMenu(syncId, serverPlayer.inventory, serverPlayer);
-
-			if (handler == null) {
-				if (player.isSpectator()) {
-					player.addChatMessage((new TranslatableText("container.spectatorCantOpen")).formatted(Formatting.RED), true);
-				}
-
-				return;
-			}
-
-			PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
-			buf.writeVarInt(Registry.CONTAINER.getRawId(handler.getType()));
-			buf.writeVarInt(syncId);
-			buf.writeText(factory.getDisplayName());
-			packetWriter.accept(buf);
-
-			ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, Networking.OPEN_ID, buf);
-			handler.addListener(serverPlayer);
-			serverPlayer.container = handler;
+		if (player.container != player.playerContainer) {
+			player.closeContainer();
 		}
+
+		bridge.callIncrementContainerSyncId();
+		int syncId = bridge.getContainerSyncId();
+		Container handler = factory.createMenu(syncId, player.inventory, player);
+
+		if (handler == null) {
+			if (player.isSpectator()) {
+				player.addChatMessage((new TranslatableText("container.spectatorCantOpen")).formatted(Formatting.RED), true);
+			}
+
+			return OptionalInt.empty();
+		}
+
+		PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
+		buf.writeVarInt(Registry.CONTAINER.getRawId(handler.getType()));
+		buf.writeVarInt(syncId);
+		buf.writeText(factory.getDisplayName());
+		factory.writeExtraData(buf);
+
+		ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, Networking.OPEN_ID, buf);
+		handler.addListener(player);
+		player.container = handler;
+		return OptionalInt.of(syncId);
 	}
 }
