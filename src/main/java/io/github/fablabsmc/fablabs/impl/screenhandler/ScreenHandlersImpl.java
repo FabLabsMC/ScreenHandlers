@@ -40,7 +40,7 @@ public final class ScreenHandlersImpl implements ScreenHandlers {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends Container> ContainerType<T>  simple(SimpleFactory<T> factory) {
+	public <T extends Container> ContainerType<T> simple(SimpleFactory<T> factory) {
 		try {
 			ContainerType<T> result = (ContainerType<T>) CONSTRUCTOR.get().invoke(null);
 			((ScreenHandlerTypeBridge<T>) result).fablabs_setFactory(((syncId, inventory, buf) -> factory.create(syncId, inventory)));

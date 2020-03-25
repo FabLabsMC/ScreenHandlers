@@ -10,13 +10,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import net.minecraft.container.Container;
 import net.minecraft.container.ContainerType;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 
 @Mixin(ContainerType.class)
 public abstract class ScreenHandlerTypeMixin<T extends Container> implements ScreenHandlerTypeBridge<T> {
 	@Inject(method = "create", at = @At("HEAD"), cancellable = true)
 	private void fablabs_onCreate(int syncId, PlayerInventory inventory, CallbackInfoReturnable<T> info) {
 		if (fablabs_hasExtraData()) {
-			throw new IllegalStateException("[FabLabs] A screen handler with extra data must be opened with ScreenHandlers.open!");
+			Identifier id = Registry.CONTAINER.getId((ContainerType<?>) (Object) this);
+			throw new IllegalStateException("[FabLabs] Screen handler " + id +" with extra data must be opened with a NetworkedScreenHandlerFactory!");
 		}
 
 		ScreenHandlers.ExtendedFactory<T> factory = fablabs_getFactory();
