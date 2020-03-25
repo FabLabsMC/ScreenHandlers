@@ -10,3 +10,5 @@ pluginManagement {
 }
 
 rootProject.name = 'screen-handlers'
+
+include 'example'

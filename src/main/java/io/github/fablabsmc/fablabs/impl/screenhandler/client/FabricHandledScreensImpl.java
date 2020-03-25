@@ -29,7 +29,7 @@ public final class FabricHandledScreensImpl implements FabricHandledScreens {
 	}
 
 	@Override
-	public <T extends Container, U extends Screen & ContainerProvider<T>> void register(ContainerType<T> type, Factory<T, U> screenFactory) {
+	public <T extends Container, U extends Screen & ContainerProvider<? extends T>> void register(ContainerType<? extends T> type, Factory<? super T, ? extends U> screenFactory) {
 		FACTORIES.put(type, screenFactory);
 	}
 }

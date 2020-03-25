@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "id": "fablabs-screen-handlers-example",
+  "version": "1.0.0",
+
+  "entrypoints": {
+    "main": ["io.github.fablabsmc.fablabs.impl.screenhandler.example.Example"],
+    "client": ["io.github.fablabsmc.fablabs.impl.screenhandler.example.client.ExampleClient"]
+  }
+}
