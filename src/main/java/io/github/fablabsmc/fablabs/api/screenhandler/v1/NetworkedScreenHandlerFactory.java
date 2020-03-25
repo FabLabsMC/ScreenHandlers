@@ -13,7 +13,7 @@ import net.minecraft.util.PacketByteBuf;
  * An extension of {@code NamedScreenHandlerFactory} that can write additional
  * networking data to a screen opening packet.
  *
- * @see ScreenHandlers#createExtendedType(ScreenHandlers.Factory)
+ * @see ScreenHandlers#extended(ScreenHandlers.ExtendedFactory)
  */
 public interface NetworkedScreenHandlerFactory extends NameableContainerFactory {
 	/**

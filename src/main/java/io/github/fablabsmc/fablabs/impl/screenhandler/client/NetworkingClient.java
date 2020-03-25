@@ -2,7 +2,7 @@ package io.github.fablabsmc.fablabs.impl.screenhandler.client;
 
 import io.github.fablabsmc.fablabs.api.screenhandler.v1.ScreenHandlers;
 import io.github.fablabsmc.fablabs.api.screenhandler.v1.client.FabricHandledScreens;
-import io.github.fablabsmc.fablabs.impl.screenhandler.Networking;
+import io.github.fablabsmc.fablabs.impl.screenhandler.Packets;
 import io.github.fablabsmc.fablabs.impl.screenhandler.ScreenHandlerTypeBridge;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,7 +27,7 @@ public final class NetworkingClient implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
-		ClientSidePacketRegistry.INSTANCE.register(Networking.OPEN_ID, (ctx, buf) -> openScreen(buf));
+		ClientSidePacketRegistry.INSTANCE.register(Packets.OPEN_ID, (ctx, buf) -> openScreen(buf));
 	}
 
 	@SuppressWarnings({"rawtypes", "unchecked"})
@@ -55,15 +55,17 @@ public final class NetworkingClient implements ClientModInitializer {
 			MinecraftClient client = MinecraftClient.getInstance();
 			PlayerEntity player = client.player;
 
-			ScreenHandlers.Factory<?> factory = bridge.fablabs_getFactory();
+			ScreenHandlers.ExtendedFactory<?> factory = bridge.fablabs_getFactory();
 			Screen screen = screenFactory.create(
 					factory.create(syncId, player.inventory, buf),
 					player.inventory,
 					title
 			);
 
-			player.container = ((ContainerProvider<?>) screen).getContainer();
-			client.openScreen(screen);
+			MinecraftClient.getInstance().execute(() -> {
+				player.container = ((ContainerProvider<?>) screen).getContainer();
+				client.openScreen(screen);
+			});
 		} else {
 			LOGGER.warn("[FabLabs] Screen not registered for screen handler {}!", title);
 		}

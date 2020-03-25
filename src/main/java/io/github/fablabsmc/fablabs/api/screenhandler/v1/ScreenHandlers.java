@@ -23,7 +23,7 @@ public interface ScreenHandlers {
 	 * @param <T>     the screen handler type
 	 * @return the created type object
 	 */
-	<T extends Container> ContainerType<T> createType(SimpleFactory<T> factory);
+	<T extends Container> ContainerType<T> simple(SimpleFactory<T> factory);
 
 	/**
 	 * Creates a new {@code ScreenHandlerType} that creates client-sided screen handlers with additional
@@ -35,7 +35,7 @@ public interface ScreenHandlers {
 	 * @param <T>     the screen handler type
 	 * @return the created type object
 	 */
-	<T extends Container> ContainerType<T> createExtendedType(Factory<T> factory);
+	<T extends Container> ContainerType<T> extended(ExtendedFactory<T> factory);
 
 	/**
 	 * A factory for client-sided screen handler instances.
@@ -60,7 +60,7 @@ public interface ScreenHandlers {
 	 *
 	 * @param <T> the screen handler type
 	 */
-	interface Factory<T extends Container> {
+	interface ExtendedFactory<T extends Container> {
 		/**
 		 * Creates a new client-sided screen handler with additional opening data.
 		 *

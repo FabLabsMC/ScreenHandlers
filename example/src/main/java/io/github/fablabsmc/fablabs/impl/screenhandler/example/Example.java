@@ -12,7 +12,7 @@ import net.minecraft.util.registry.Registry;
 
 public class Example implements ModInitializer {
 	public static final Item BAG = new BagItem(new Item.Settings().group(ItemGroup.TOOLS).maxCount(1));
-	public static final ContainerType<BagScreenHandler> BAG_SCREEN_HANDLER = ScreenHandlers.INSTANCE.createExtendedType(BagScreenHandler::new);
+	public static final ContainerType<BagScreenHandler> BAG_SCREEN_HANDLER = ScreenHandlers.INSTANCE.extended(BagScreenHandler::new);
 
 	@Override
 	public void onInitialize() {

@@ -40,7 +40,7 @@ public final class ScreenHandlersImpl implements ScreenHandlers {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends Container> ContainerType<T> createType(SimpleFactory<T> factory) {
+	public <T extends Container> ContainerType<T>  simple(SimpleFactory<T> factory) {
 		try {
 			ContainerType<T> result = (ContainerType<T>) CONSTRUCTOR.get().invoke(null);
 			((ScreenHandlerTypeBridge<T>) result).fablabs_setFactory(((syncId, inventory, buf) -> factory.create(syncId, inventory)));
@@ -52,7 +52,7 @@ public final class ScreenHandlersImpl implements ScreenHandlers {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends Container> ContainerType<T> createExtendedType(Factory<T> factory) {
+	public <T extends Container> ContainerType<T> extended(ExtendedFactory<T> factory) {
 		try {
 			ContainerType<T> result = (ContainerType<T>) CONSTRUCTOR.get().invoke(null);
 			ScreenHandlerTypeBridge<T> bridge = (ScreenHandlerTypeBridge<T>) result;
@@ -91,7 +91,7 @@ public final class ScreenHandlersImpl implements ScreenHandlers {
 		buf.writeText(factory.getDisplayName());
 		factory.writeExtraData(buf);
 
-		ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, Networking.OPEN_ID, buf);
+		ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, Packets.OPEN_ID, buf);
 		handler.addListener(player);
 		player.container = handler;
 		return OptionalInt.of(syncId);

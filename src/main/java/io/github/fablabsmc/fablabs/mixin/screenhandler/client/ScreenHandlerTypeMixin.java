@@ -19,7 +19,7 @@ public abstract class ScreenHandlerTypeMixin<T extends Container> implements Scr
 			throw new IllegalStateException("[FabLabs] A screen handler with extra data must be opened with ScreenHandlers.open!");
 		}
 
-		ScreenHandlers.Factory<T> factory = fablabs_getFactory();
+		ScreenHandlers.ExtendedFactory<T> factory = fablabs_getFactory();
 
 		if (factory != null) {
 			info.setReturnValue(factory.create(syncId, inventory, null));
