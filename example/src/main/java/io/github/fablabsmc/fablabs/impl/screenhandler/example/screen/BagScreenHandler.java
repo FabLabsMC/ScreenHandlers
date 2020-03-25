@@ -10,14 +10,29 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.BasicInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.PacketByteBuf;
+import net.minecraft.util.math.BlockPos;
 
 public class BagScreenHandler extends Generic3x3Container {
-	public BagScreenHandler(int syncId, PlayerInventory playerInventory) {
-		this(syncId, playerInventory, new BasicInventory(9));
+	private final BlockPos pos;
+
+	public BagScreenHandler(int syncId, PlayerInventory playerInventory, PacketByteBuf buf) {
+		this(syncId, playerInventory, new BasicInventory(9), readOptionalPos(buf));
 	}
 
-	public BagScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory) {
+	private static BlockPos readOptionalPos(PacketByteBuf buf) {
+		boolean hasPos = buf.readBoolean();
+		BlockPos pos = buf.readBlockPos();
+		return hasPos ? pos : null;
+	}
+
+	public BagScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory, BlockPos pos) {
 		super(syncId, playerInventory, inventory);
+		this.pos = pos;
+	}
+
+	public BlockPos getPos() {
+		return pos;
 	}
 
 	@Override
