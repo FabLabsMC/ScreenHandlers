@@ -17,15 +17,15 @@ import net.minecraft.util.PacketByteBuf;
  */
 public interface NetworkedScreenHandlerFactory extends NameableContainerFactory {
 	/**
-	 * Writes additional server -> client networked data to the buffer.
+	 * Writes additional server -> client screen opening data to the buffer.
 	 */
-	void writeExtraData(PacketByteBuf buf);
+	void writeScreenData(PacketByteBuf buf);
 
 	/**
 	 * Creates a networked screen handler factory from a base factory and a packet writer.
 	 *
 	 * <p>All {@link NameableContainerFactory} operations are delegated to the base factory,
-	 * and {@link #writeExtraData(PacketByteBuf)} is delegated to the writer.
+	 * and {@link #writeScreenData(PacketByteBuf)} is delegated to the writer.
 	 *
 	 * @param factory      the base factory
 	 * @param packetWriter the packet writer
@@ -44,7 +44,7 @@ public interface NetworkedScreenHandlerFactory extends NameableContainerFactory 
 			}
 
 			@Override
-			public void writeExtraData(PacketByteBuf buf) {
+			public void writeScreenData(PacketByteBuf buf) {
 				packetWriter.accept(buf);
 			}
 		};

@@ -89,7 +89,7 @@ public final class ScreenHandlersImpl implements ScreenHandlers {
 		buf.writeVarInt(Registry.CONTAINER.getRawId(handler.getType()));
 		buf.writeVarInt(syncId);
 		buf.writeText(factory.getDisplayName());
-		factory.writeExtraData(buf);
+		factory.writeScreenData(buf);
 
 		ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, Packets.OPEN_ID, buf);
 		handler.addListener(player);
