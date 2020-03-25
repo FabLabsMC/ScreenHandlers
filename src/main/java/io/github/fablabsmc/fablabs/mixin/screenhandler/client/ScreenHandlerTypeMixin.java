@@ -15,10 +15,14 @@ import net.minecraft.entity.player.PlayerInventory;
 public abstract class ScreenHandlerTypeMixin<T extends Container> implements ScreenHandlerTypeBridge<T> {
 	@Inject(method = "create", at = @At("HEAD"), cancellable = true)
 	private void fablabs_onCreate(int syncId, PlayerInventory inventory, CallbackInfoReturnable<T> info) {
+		if (fablabs_hasExtraData()) {
+			throw new IllegalStateException("[FabLabs] A screen handler with extra data must be opened with ScreenHandlers.open!");
+		}
+
 		ScreenHandlers.Factory<T> factory = fablabs_getFactory();
 
 		if (factory != null) {
-			info.setReturnValue(factory.create(syncId, inventory));
+			info.setReturnValue(factory.create(syncId, inventory, null));
 		}
 	}
 }

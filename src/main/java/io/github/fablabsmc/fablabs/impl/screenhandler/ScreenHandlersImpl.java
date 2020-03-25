@@ -3,12 +3,24 @@ package io.github.fablabsmc.fablabs.impl.screenhandler;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Constructor;
+import java.util.function.Consumer;
 
 import io.github.fablabsmc.fablabs.api.screenhandler.v1.ScreenHandlers;
+import io.github.fablabsmc.fablabs.mixin.screenhandler.ServerPlayerEntityAccessor;
+import io.netty.buffer.Unpooled;
 
 import net.minecraft.container.Container;
 import net.minecraft.container.ContainerType;
+import net.minecraft.container.NameableContainerFactory;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Lazy;
+import net.minecraft.util.PacketByteBuf;
+import net.minecraft.util.registry.Registry;
+
+import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
 
 public final class ScreenHandlersImpl implements ScreenHandlers {
 	public static final ScreenHandlersImpl INSTANCE = new ScreenHandlersImpl();
@@ -27,13 +39,61 @@ public final class ScreenHandlersImpl implements ScreenHandlers {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends Container> ContainerType<T> createType(ScreenHandlers.Factory<T> factory) {
+	public <T extends Container> ContainerType<T> createType(SimpleFactory<T> factory) {
 		try {
 			ContainerType<T> result = (ContainerType<T>) CONSTRUCTOR.get().invoke(null);
-			((ScreenHandlerTypeBridge<T>) result).fablabs_setFactory(factory);
+			((ScreenHandlerTypeBridge<T>) result).fablabs_setFactory(((syncId, inventory, buf) -> factory.create(syncId, inventory)));
 			return result;
 		} catch (Throwable t) {
 			throw new RuntimeException("Could not construct ScreenHandlerType!", t);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T extends Container> ContainerType<T> createExtendedType(Factory<T> factory) {
+		try {
+			ContainerType<T> result = (ContainerType<T>) CONSTRUCTOR.get().invoke(null);
+			ScreenHandlerTypeBridge<T> bridge = (ScreenHandlerTypeBridge<T>) result;
+			bridge.fablabs_setFactory(factory);
+			bridge.fablabs_setHasExtraData(true);
+			return result;
+		} catch (Throwable t) {
+			throw new RuntimeException("Could not construct ScreenHandlerType!", t);
+		}
+	}
+
+	@Override
+	public void open(PlayerEntity player, NameableContainerFactory factory, Consumer<PacketByteBuf> packetWriter) {
+		if (player instanceof ServerPlayerEntity) {
+			ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
+			ServerPlayerEntityAccessor bridge = (ServerPlayerEntityAccessor) player;
+
+			if (serverPlayer.container != serverPlayer.playerContainer) {
+				serverPlayer.closeContainer();
+			}
+
+			bridge.callIncrementContainerSyncId();
+			int syncId = bridge.getContainerSyncId();
+			Container handler = factory.createMenu(syncId, serverPlayer.inventory, serverPlayer);
+
+			if (handler == null) {
+				if (player.isSpectator()) {
+					player.addChatMessage((new TranslatableText("container.spectatorCantOpen")).formatted(Formatting.RED), true);
+				}
+
+				return;
+			}
+
+			PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
+			buf.writeVarInt(Registry.CONTAINER.getRawId(handler.getType()));
+			buf.writeVarInt(syncId);
+			buf.writeText(factory.getDisplayName());
+			packetWriter.accept(buf);
+
+			ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, Networking.OPEN_ID, buf);
+			handler.addListener(serverPlayer);
+			serverPlayer.container = handler;
 		}
 	}
 }
