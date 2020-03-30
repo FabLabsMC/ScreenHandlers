@@ -45,7 +45,7 @@ public final class NetworkingClient implements ClientModInitializer {
 		ScreenHandlerTypeBridge<?> bridge = (ScreenHandlerTypeBridge<?>) type;
 
 		if (!bridge.fablabs_hasExtraData()) {
-			LOGGER.warn("[FabLabs] Screen handler {} does not have extra data", Registry.CONTAINER.getId(type));
+			LOGGER.warn("[FabLabs] Received extended opening packet for screen handler {} without extra data", Registry.CONTAINER.getId(type));
 			return;
 		}
 

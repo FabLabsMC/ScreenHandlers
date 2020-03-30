@@ -35,7 +35,7 @@ public class ServerPlayerEntityMixin {
 	private void fablabs_checkForIncorrectHandlers(NameableContainerFactory factory, CallbackInfoReturnable<OptionalInt> info, Container handler) {
 		if (((ScreenHandlerTypeBridge<?>) handler.getType()).fablabs_hasExtraData()) {
 			Identifier id = Registry.CONTAINER.getId(handler.getType());
-			throw new IllegalArgumentException("[FabLabs] Screen handler " + id + " with extra data must be opened with a NetworkedScreenHandlerFactory!");
+			throw new IllegalArgumentException("[FabLabs] Screen handler " + id + " with extra data must be opened with an ExtendedScreenHandlerFactory!");
 		}
 	}
 }

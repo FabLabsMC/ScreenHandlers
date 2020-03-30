@@ -19,7 +19,7 @@ public abstract class ScreenHandlerTypeMixin<T extends Container> implements Scr
 	private void fablabs_onCreate(int syncId, PlayerInventory inventory, CallbackInfoReturnable<T> info) {
 		if (fablabs_hasExtraData()) {
 			Identifier id = Registry.CONTAINER.getId((ContainerType<?>) (Object) this);
-			throw new IllegalStateException("[FabLabs] Screen handler " + id +" with extra data must be opened with a NetworkedScreenHandlerFactory!");
+			throw new IllegalStateException("[FabLabs] Screen handler " + id + " with extra data cannot be constructed using its type!");
 		}
 
 		ScreenHandlers.ExtendedFactory<T> factory = fablabs_getFactory();
