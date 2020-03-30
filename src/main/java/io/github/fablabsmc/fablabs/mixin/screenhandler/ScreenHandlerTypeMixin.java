@@ -9,15 +9,26 @@ import net.minecraft.container.ContainerType;
 
 @Mixin(ContainerType.class)
 public class ScreenHandlerTypeMixin<T extends Container> implements ScreenHandlerTypeBridge<T> {
-	private ScreenHandlers.Factory<T> fablabs_factory = null;
+	private ScreenHandlers.ExtendedFactory<T> fablabs_factory = null;
+	private boolean fablabs_hasExtraData = false;
 
 	@Override
-	public ScreenHandlers.Factory<T> fablabs_getFactory() {
+	public ScreenHandlers.ExtendedFactory<T> fablabs_getFactory() {
 		return fablabs_factory;
 	}
 
 	@Override
-	public void fablabs_setFactory(ScreenHandlers.Factory<T> factory) {
+	public void fablabs_setFactory(ScreenHandlers.ExtendedFactory<T> factory) {
 		this.fablabs_factory = factory;
+	}
+
+	@Override
+	public boolean fablabs_hasExtraData() {
+		return fablabs_hasExtraData;
+	}
+
+	@Override
+	public void fablabs_setHasExtraData(boolean hasExtraData) {
+		this.fablabs_hasExtraData = hasExtraData;
 	}
 }

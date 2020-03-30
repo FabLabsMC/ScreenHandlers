@@ -4,7 +4,9 @@
   "package": "io.github.fablabsmc.fablabs.mixin.screenhandler",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "ScreenHandlerTypeMixin"
+    "ScreenHandlerTypeMixin",
+    "ServerPlayerEntityAccessor",
+    "ServerPlayerEntityMixin"
   ],
   "client": [
     "client.HandledScreensMixin",

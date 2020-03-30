@@ -10,15 +10,22 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import net.minecraft.container.Container;
 import net.minecraft.container.ContainerType;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 
 @Mixin(ContainerType.class)
 public abstract class ScreenHandlerTypeMixin<T extends Container> implements ScreenHandlerTypeBridge<T> {
 	@Inject(method = "create", at = @At("HEAD"), cancellable = true)
 	private void fablabs_onCreate(int syncId, PlayerInventory inventory, CallbackInfoReturnable<T> info) {
-		ScreenHandlers.Factory<T> factory = fablabs_getFactory();
+		if (fablabs_hasExtraData()) {
+			Identifier id = Registry.CONTAINER.getId((ContainerType<?>) (Object) this);
+			throw new IllegalStateException("[FabLabs] Screen handler " + id + " with extra data cannot be constructed using its type!");
+		}
+
+		ScreenHandlers.ExtendedFactory<T> factory = fablabs_getFactory();
 
 		if (factory != null) {
-			info.setReturnValue(factory.create(syncId, inventory));
+			info.setReturnValue(factory.create(syncId, inventory, null));
 		}
 	}
 }

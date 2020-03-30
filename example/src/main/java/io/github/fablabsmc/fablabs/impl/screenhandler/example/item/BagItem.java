@@ -19,7 +19,7 @@ public class BagItem extends Item {
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 		ItemStack stack = user.getStackInHand(hand);
 		user.openContainer(createScreenHandlerFactory(stack));
-		return TypedActionResult.pass(stack);
+		return TypedActionResult.success(stack);
 	}
 
 	private NameableContainerFactory createScreenHandlerFactory(ItemStack stack) {

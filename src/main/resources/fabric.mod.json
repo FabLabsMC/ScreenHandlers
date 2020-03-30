@@ -11,6 +11,9 @@
     "sources": "https://github.com/${repo}"
   },
   "environment": "*",
+  "entrypoints": {
+    "client": ["io.github.fablabsmc.fablabs.impl.screenhandler.client.NetworkingClient"]
+  },
   "mixins": [
     "mixins.${libname}.json"
   ],

@@ -12,17 +12,24 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 
 public class BagScreenHandler extends Generic3x3Container {
+	private final ContainerType<?> type;
+
 	public BagScreenHandler(int syncId, PlayerInventory playerInventory) {
 		this(syncId, playerInventory, new BasicInventory(9));
 	}
 
 	public BagScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory) {
+		this(Example.BAG_SCREEN_HANDLER, syncId, playerInventory, inventory);
+	}
+
+	protected BagScreenHandler(ContainerType<?> type, int syncId, PlayerInventory playerInventory, Inventory inventory) {
 		super(syncId, playerInventory, inventory);
+		this.type = type;
 	}
 
 	@Override
 	public ContainerType<?> getType() {
-		return Example.BAG_SCREEN_HANDLER;
+		return type;
 	}
 
 	@Override

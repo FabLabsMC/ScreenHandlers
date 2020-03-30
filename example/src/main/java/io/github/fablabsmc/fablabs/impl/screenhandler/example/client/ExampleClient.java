@@ -9,5 +9,6 @@ public class ExampleClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		FabricHandledScreens.INSTANCE.register(Example.BAG_SCREEN_HANDLER, Generic3x3ContainerScreen::new);
+		FabricHandledScreens.INSTANCE.register(Example.POSITIONED_BAG_SCREEN_HANDLER, PositionedBagScreen::new);
 	}
 }
