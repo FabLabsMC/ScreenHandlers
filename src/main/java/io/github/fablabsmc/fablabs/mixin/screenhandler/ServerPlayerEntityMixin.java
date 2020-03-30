@@ -2,7 +2,7 @@ package io.github.fablabsmc.fablabs.mixin.screenhandler;
 
 import java.util.OptionalInt;
 
-import io.github.fablabsmc.fablabs.api.screenhandler.v1.NetworkedScreenHandlerFactory;
+import io.github.fablabsmc.fablabs.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import io.github.fablabsmc.fablabs.impl.screenhandler.ScreenHandlerTypeBridge;
 import io.github.fablabsmc.fablabs.impl.screenhandler.ScreenHandlersImpl;
 import org.spongepowered.asm.mixin.Mixin;
@@ -21,8 +21,8 @@ import net.minecraft.util.registry.Registry;
 public class ServerPlayerEntityMixin {
 	@Inject(method = "openContainer(Lnet/minecraft/container/NameableContainerFactory;)Ljava/util/OptionalInt;", at = @At("HEAD"), cancellable = true)
 	private void fablabs_onOpenHandledScreen(NameableContainerFactory factory, CallbackInfoReturnable<OptionalInt> info) {
-		if (factory instanceof NetworkedScreenHandlerFactory) {
-			OptionalInt result = ScreenHandlersImpl.INSTANCE.open((ServerPlayerEntity) (Object) this, (NetworkedScreenHandlerFactory) factory);
+		if (factory instanceof ExtendedScreenHandlerFactory) {
+			OptionalInt result = ScreenHandlersImpl.INSTANCE.open((ServerPlayerEntity) (Object) this, (ExtendedScreenHandlerFactory) factory);
 			info.setReturnValue(result);
 		}
 	}

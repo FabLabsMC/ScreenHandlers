@@ -1,10 +1,8 @@
 package io.github.fablabsmc.fablabs.impl.screenhandler.example.item;
 
-import io.github.fablabsmc.fablabs.api.screenhandler.v1.NetworkedScreenHandlerFactory;
+import io.github.fablabsmc.fablabs.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import io.github.fablabsmc.fablabs.impl.screenhandler.example.screen.PositionedBagScreenHandler;
 import net.minecraft.container.Container;
-import net.minecraft.container.NameableContainerFactory;
-import net.minecraft.container.SimpleNamedContainerFactory;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
@@ -38,8 +36,8 @@ public class PositionedBagItem extends BagItem {
 		return ActionResult.SUCCESS;
 	}
 
-	private NetworkedScreenHandlerFactory createScreenHandlerFactory(ItemStack stack, BlockPos pos) {
-		return new NetworkedScreenHandlerFactory() {
+	private ExtendedScreenHandlerFactory createScreenHandlerFactory(ItemStack stack, BlockPos pos) {
+		return new ExtendedScreenHandlerFactory() {
 			@Override
 			public Container createMenu(int syncId, PlayerInventory inventory, PlayerEntity player) {
 				return new PositionedBagScreenHandler(syncId, inventory, new BagInventory(stack), pos);

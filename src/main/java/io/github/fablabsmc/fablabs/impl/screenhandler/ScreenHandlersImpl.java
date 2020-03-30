@@ -6,7 +6,7 @@ import java.lang.reflect.Constructor;
 import java.util.Objects;
 import java.util.OptionalInt;
 
-import io.github.fablabsmc.fablabs.api.screenhandler.v1.NetworkedScreenHandlerFactory;
+import io.github.fablabsmc.fablabs.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import io.github.fablabsmc.fablabs.api.screenhandler.v1.ScreenHandlers;
 import io.github.fablabsmc.fablabs.mixin.screenhandler.ServerPlayerEntityAccessor;
 import io.netty.buffer.Unpooled;
@@ -64,7 +64,7 @@ public final class ScreenHandlersImpl implements ScreenHandlers {
 		}
 	}
 
-	public OptionalInt open(ServerPlayerEntity player, NetworkedScreenHandlerFactory factory) {
+	public OptionalInt open(ServerPlayerEntity player, ExtendedScreenHandlerFactory factory) {
 		Objects.requireNonNull(player, "player is null");
 		Objects.requireNonNull(factory, "factory is null");
 		ServerPlayerEntityAccessor bridge = (ServerPlayerEntityAccessor) player;

@@ -29,7 +29,7 @@ public interface ScreenHandlers {
 	 * Creates a new {@code ScreenHandlerType} that creates client-sided screen handlers with additional
 	 * networked opening data.
 	 *
-	 * <p>These screen handlers must be opened with a {@link NetworkedScreenHandlerFactory}.
+	 * <p>These screen handlers must be opened with a {@link ExtendedScreenHandlerFactory}.
 	 *
 	 * @param factory the client-sided screen handler factory
 	 * @param <T>     the screen handler type
@@ -59,6 +59,7 @@ public interface ScreenHandlers {
 	 * with additional synced opening data.
 	 *
 	 * @param <T> the screen handler type
+	 * @see ExtendedScreenHandlerFactory
 	 */
 	interface ExtendedFactory<T extends Container> {
 		/**

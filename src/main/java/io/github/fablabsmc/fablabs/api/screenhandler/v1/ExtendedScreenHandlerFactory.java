@@ -15,7 +15,7 @@ import net.minecraft.util.PacketByteBuf;
  *
  * @see ScreenHandlers#extended(ScreenHandlers.ExtendedFactory)
  */
-public interface NetworkedScreenHandlerFactory extends NameableContainerFactory {
+public interface ExtendedScreenHandlerFactory extends NameableContainerFactory {
 	/**
 	 * Writes additional server -> client screen opening data to the buffer.
 	 */
@@ -31,8 +31,8 @@ public interface NetworkedScreenHandlerFactory extends NameableContainerFactory 
 	 * @param packetWriter the packet writer
 	 * @return the created factory
 	 */
-	static NetworkedScreenHandlerFactory of(NameableContainerFactory factory, Consumer<PacketByteBuf> packetWriter) {
-		return new NetworkedScreenHandlerFactory() {
+	static ExtendedScreenHandlerFactory of(NameableContainerFactory factory, Consumer<PacketByteBuf> packetWriter) {
+		return new ExtendedScreenHandlerFactory() {
 			@Override
 			public Container createMenu(int syncId, PlayerInventory inventory, PlayerEntity player) {
 				return factory.createMenu(syncId, inventory, player);
