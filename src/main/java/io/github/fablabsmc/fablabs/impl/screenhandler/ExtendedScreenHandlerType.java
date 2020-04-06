@@ -1,12 +1,14 @@
 package io.github.fablabsmc.fablabs.impl.screenhandler;
 
 import io.github.fablabsmc.fablabs.api.screenhandler.v1.ScreenHandlers;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
 public final class ExtendedScreenHandlerType<T extends ScreenHandler> extends ScreenHandlerType<T> {
 	private final ScreenHandlers.ExtendedFactory<T> factory;
