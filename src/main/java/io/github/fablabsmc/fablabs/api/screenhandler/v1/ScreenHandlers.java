@@ -2,13 +2,13 @@ package io.github.fablabsmc.fablabs.api.screenhandler.v1;
 
 import io.github.fablabsmc.fablabs.impl.screenhandler.ScreenHandlersImpl;
 
-import net.minecraft.container.Container;
-import net.minecraft.container.ContainerType;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.util.PacketByteBuf;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.ScreenHandlerType;
 
 /**
  * An utility for creating screen handler types.
@@ -23,7 +23,7 @@ public interface ScreenHandlers {
 	 * @param <T>     the screen handler type
 	 * @return the created type object
 	 */
-	<T extends Container> ContainerType<T> simple(SimpleFactory<T> factory);
+	<T extends ScreenHandler> ScreenHandlerType<T> simple(SimpleFactory<T> factory);
 
 	/**
 	 * Creates a new {@code ScreenHandlerType} that creates client-sided screen handlers with additional
@@ -35,14 +35,14 @@ public interface ScreenHandlers {
 	 * @param <T>     the screen handler type
 	 * @return the created type object
 	 */
-	<T extends Container> ContainerType<T> extended(ExtendedFactory<T> factory);
+	<T extends ScreenHandler> ScreenHandlerType<T> extended(ExtendedFactory<T> factory);
 
 	/**
 	 * A factory for client-sided screen handler instances.
 	 *
 	 * @param <T> the screen handler type
 	 */
-	interface SimpleFactory<T extends Container> {
+	interface SimpleFactory<T extends ScreenHandler> {
 		/**
 		 * Creates a new client-sided screen handler.
 		 *
@@ -61,7 +61,7 @@ public interface ScreenHandlers {
 	 * @param <T> the screen handler type
 	 * @see ExtendedScreenHandlerFactory
 	 */
-	interface ExtendedFactory<T extends Container> {
+	interface ExtendedFactory<T extends ScreenHandler> {
 		/**
 		 * Creates a new client-sided screen handler with additional opening data.
 		 *

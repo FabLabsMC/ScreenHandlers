@@ -4,7 +4,7 @@ import io.github.fablabsmc.fablabs.impl.screenhandler.example.Example;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.BasicInventory;
 import net.minecraft.inventory.Inventory;
-import net.minecraft.util.PacketByteBuf;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.math.BlockPos;
 
 public class PositionedBagScreenHandler extends BagScreenHandler {

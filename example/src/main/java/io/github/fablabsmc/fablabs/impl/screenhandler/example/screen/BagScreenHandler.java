@@ -2,17 +2,17 @@ package io.github.fablabsmc.fablabs.impl.screenhandler.example.screen;
 
 import io.github.fablabsmc.fablabs.impl.screenhandler.example.Example;
 import io.github.fablabsmc.fablabs.impl.screenhandler.example.item.BagItem;
-import net.minecraft.container.ContainerType;
-import net.minecraft.container.Generic3x3Container;
-import net.minecraft.container.SlotActionType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.BasicInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.screen.Generic3x3ContainerScreenHandler;
+import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.screen.slot.SlotActionType;
 
-public class BagScreenHandler extends Generic3x3Container {
-	private final ContainerType<?> type;
+public class BagScreenHandler extends Generic3x3ContainerScreenHandler {
+	private final ScreenHandlerType<?> type;
 
 	public BagScreenHandler(int syncId, PlayerInventory playerInventory) {
 		this(syncId, playerInventory, new BasicInventory(9));
@@ -22,13 +22,13 @@ public class BagScreenHandler extends Generic3x3Container {
 		this(Example.BAG_SCREEN_HANDLER, syncId, playerInventory, inventory);
 	}
 
-	protected BagScreenHandler(ContainerType<?> type, int syncId, PlayerInventory playerInventory, Inventory inventory) {
+	protected BagScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerInventory playerInventory, Inventory inventory) {
 		super(syncId, playerInventory, inventory);
 		this.type = type;
 	}
 
 	@Override
-	public ContainerType<?> getType() {
+	public ScreenHandlerType<?> getType() {
 		return type;
 	}
 

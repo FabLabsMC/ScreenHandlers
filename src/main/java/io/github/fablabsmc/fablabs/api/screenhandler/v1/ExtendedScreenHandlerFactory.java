@@ -2,12 +2,12 @@ package io.github.fablabsmc.fablabs.api.screenhandler.v1;
 
 import java.util.function.Consumer;
 
-import net.minecraft.container.Container;
-import net.minecraft.container.NameableContainerFactory;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.screen.NamedScreenHandlerFactory;
+import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
-import net.minecraft.util.PacketByteBuf;
 
 /**
  * An extension of {@code NamedScreenHandlerFactory} that can write additional
@@ -15,7 +15,7 @@ import net.minecraft.util.PacketByteBuf;
  *
  * @see ScreenHandlers#extended(ScreenHandlers.ExtendedFactory)
  */
-public interface ExtendedScreenHandlerFactory extends NameableContainerFactory {
+public interface ExtendedScreenHandlerFactory extends NamedScreenHandlerFactory {
 	/**
 	 * Writes additional server -> client screen opening data to the buffer.
 	 */
@@ -24,17 +24,17 @@ public interface ExtendedScreenHandlerFactory extends NameableContainerFactory {
 	/**
 	 * Creates a networked screen handler factory from a base factory and a packet writer.
 	 *
-	 * <p>All {@link NameableContainerFactory} operations are delegated to the base factory,
+	 * <p>All {@link NamedScreenHandlerFactory} operations are delegated to the base factory,
 	 * and {@link #writeScreenData(PacketByteBuf)} is delegated to the writer.
 	 *
 	 * @param factory      the base factory
 	 * @param packetWriter the packet writer
 	 * @return the created factory
 	 */
-	static ExtendedScreenHandlerFactory of(NameableContainerFactory factory, Consumer<PacketByteBuf> packetWriter) {
+	static ExtendedScreenHandlerFactory of(NamedScreenHandlerFactory factory, Consumer<PacketByteBuf> packetWriter) {
 		return new ExtendedScreenHandlerFactory() {
 			@Override
-			public Container createMenu(int syncId, PlayerInventory inventory, PlayerEntity player) {
+			public ScreenHandler createMenu(int syncId, PlayerInventory inventory, PlayerEntity player) {
 				return factory.createMenu(syncId, inventory, player);
 			}
 

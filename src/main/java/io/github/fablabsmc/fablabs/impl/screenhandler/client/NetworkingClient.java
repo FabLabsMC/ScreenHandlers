@@ -4,16 +4,16 @@ import io.github.fablabsmc.fablabs.api.screenhandler.v1.ScreenHandlers;
 import io.github.fablabsmc.fablabs.api.screenhandler.v1.client.FabricHandledScreens;
 import io.github.fablabsmc.fablabs.impl.screenhandler.Packets;
 import io.github.fablabsmc.fablabs.impl.screenhandler.ScreenHandlerTypeBridge;
+import net.minecraft.client.gui.screen.ingame.ScreenHandlerProvider;
+import net.minecraft.screen.ScreenHandlerType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.ingame.ContainerProvider;
-import net.minecraft.container.ContainerType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
-import net.minecraft.util.PacketByteBuf;
 import net.minecraft.util.registry.Registry;
 
 import net.fabricmc.api.ClientModInitializer;
@@ -35,7 +35,7 @@ public final class NetworkingClient implements ClientModInitializer {
 		int typeId = buf.readVarInt();
 		int syncId = buf.readVarInt();
 		Text title = buf.readText();
-		ContainerType<?> type = Registry.CONTAINER.get(typeId);
+		ScreenHandlerType<?> type = Registry.SCREEN_HANDLER.get(typeId);
 
 		if (type == null) {
 			LOGGER.warn("[FabLabs] Unknown screen handler ID: {}", typeId);
@@ -45,7 +45,7 @@ public final class NetworkingClient implements ClientModInitializer {
 		ScreenHandlerTypeBridge<?> bridge = (ScreenHandlerTypeBridge<?>) type;
 
 		if (!bridge.fablabs_hasExtraData()) {
-			LOGGER.warn("[FabLabs] Received extended opening packet for screen handler {} without extra data", Registry.CONTAINER.getId(type));
+			LOGGER.warn("[FabLabs] Received extended opening packet for screen handler {} without extra data", Registry.SCREEN_HANDLER.getId(type));
 			return;
 		}
 
@@ -63,7 +63,7 @@ public final class NetworkingClient implements ClientModInitializer {
 			);
 
 			MinecraftClient.getInstance().execute(() -> {
-				player.container = ((ContainerProvider<?>) screen).getContainer();
+				player.currentScreenHandler = ((ScreenHandlerProvider<?>) screen).getScreenHandler();
 				client.openScreen(screen);
 			});
 		} else {

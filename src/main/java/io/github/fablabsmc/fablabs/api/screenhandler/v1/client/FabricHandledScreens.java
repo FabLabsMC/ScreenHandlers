@@ -3,10 +3,10 @@ package io.github.fablabsmc.fablabs.api.screenhandler.v1.client;
 import io.github.fablabsmc.fablabs.impl.screenhandler.client.FabricHandledScreensImpl;
 
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.ingame.ContainerProvider;
-import net.minecraft.container.Container;
-import net.minecraft.container.ContainerType;
+import net.minecraft.client.gui.screen.ingame.ScreenHandlerProvider;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.text.Text;
 
 import net.fabricmc.api.EnvType;
@@ -27,7 +27,7 @@ public interface FabricHandledScreens {
 	 * @param <T>           the screen handler type
 	 * @param <U>           the screen type
 	 */
-	<T extends Container, U extends Screen & ContainerProvider<? extends T>> void register(ContainerType<? extends T> type, Factory<? super T, ? extends U> screenFactory);
+	<T extends ScreenHandler, U extends Screen & ScreenHandlerProvider<? extends T>> void register(ScreenHandlerType<? extends T> type, Factory<? super T, ? extends U> screenFactory);
 
 	/**
 	 * A factory for handled screens.
@@ -36,7 +36,7 @@ public interface FabricHandledScreens {
 	 * @param <U> the screen type
 	 */
 	@FunctionalInterface
-	interface Factory<T extends Container, U extends Screen & ContainerProvider<? extends T>> {
+	interface Factory<T extends ScreenHandler, U extends Screen & ScreenHandlerProvider<? extends T>> {
 		/**
 		 * Creates a new handled screen.
 		 *

@@ -9,8 +9,8 @@ import net.minecraft.server.network.ServerPlayerEntity;
 @Mixin(ServerPlayerEntity.class)
 public interface ServerPlayerEntityAccessor {
 	@Invoker
-	void callIncrementContainerSyncId();
+	void callIncrementScreenHandlerSyncId();
 
 	@Accessor
-	int getContainerSyncId();
+	int getScreenHandlerSyncId();
 }

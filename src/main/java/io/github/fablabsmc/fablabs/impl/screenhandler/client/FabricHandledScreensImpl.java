@@ -7,9 +7,9 @@ import java.util.Objects;
 import io.github.fablabsmc.fablabs.api.screenhandler.v1.client.FabricHandledScreens;
 
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.ingame.ContainerProvider;
-import net.minecraft.container.Container;
-import net.minecraft.container.ContainerType;
+import net.minecraft.client.gui.screen.ingame.ScreenHandlerProvider;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.ScreenHandlerType;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -18,18 +18,18 @@ import net.fabricmc.api.Environment;
 public final class FabricHandledScreensImpl implements FabricHandledScreens {
 	public static final FabricHandledScreensImpl INSTANCE = new FabricHandledScreensImpl();
 
-	private static final Map<ContainerType<?>, FabricHandledScreens.Factory<?, ?>> FACTORIES = new HashMap<>();
+	private static final Map<ScreenHandlerType<?>, FabricHandledScreens.Factory<?, ?>> FACTORIES = new HashMap<>();
 
 	private FabricHandledScreensImpl() { }
 
-	public static FabricHandledScreens.Factory<?, ?> getFactory(ContainerType<?> type) {
+	public static FabricHandledScreens.Factory<?, ?> getFactory(ScreenHandlerType<?> type) {
 		Objects.requireNonNull(type, "type is null");
 
 		return FACTORIES.get(type);
 	}
 
 	@Override
-	public <T extends Container, U extends Screen & ContainerProvider<? extends T>> void register(ContainerType<? extends T> type, Factory<? super T, ? extends U> screenFactory) {
+	public <T extends ScreenHandler, U extends Screen & ScreenHandlerProvider<? extends T>> void register(ScreenHandlerType<? extends T> type, Factory<? super T, ? extends U> screenFactory) {
 		FACTORIES.put(type, screenFactory);
 	}
 }

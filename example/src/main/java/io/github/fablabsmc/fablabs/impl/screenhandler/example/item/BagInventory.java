@@ -3,7 +3,7 @@ package io.github.fablabsmc.fablabs.impl.screenhandler.example.item;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.DefaultedList;
+import net.minecraft.util.collection.DefaultedList;
 
 final class BagInventory implements ImplementedInventory {
 	private final ItemStack stack;
