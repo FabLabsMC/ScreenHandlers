@@ -3,12 +3,12 @@ package io.github.fablabsmc.fablabs.api.screenhandler.v1;
 import io.github.fablabsmc.fablabs.impl.screenhandler.ScreenHandlersImpl;
 
 import net.minecraft.entity.player.PlayerInventory;
-
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
 /**
  * An utility for creating screen handler types.

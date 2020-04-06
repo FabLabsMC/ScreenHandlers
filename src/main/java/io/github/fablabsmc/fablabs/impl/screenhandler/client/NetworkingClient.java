@@ -4,15 +4,15 @@ import io.github.fablabsmc.fablabs.api.screenhandler.v1.ScreenHandlers;
 import io.github.fablabsmc.fablabs.api.screenhandler.v1.client.FabricHandledScreens;
 import io.github.fablabsmc.fablabs.impl.screenhandler.Packets;
 import io.github.fablabsmc.fablabs.impl.screenhandler.ScreenHandlerTypeBridge;
-import net.minecraft.client.gui.screen.ingame.ScreenHandlerProvider;
-import net.minecraft.screen.ScreenHandlerType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.ingame.ScreenHandlerProvider;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.text.Text;
 import net.minecraft.util.registry.Registry;
 
