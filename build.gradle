@@ -45,7 +45,7 @@ if (System.env.REPO_NAME) {
 }
 
 minecraft {
-	accessWidener = file('src/main/resources/screen-handlers.accessWidener.txt')
+	accessWidener = file("src/main/resources/${archivesBaseName}.accesswidener")
 }
 
 repositories {

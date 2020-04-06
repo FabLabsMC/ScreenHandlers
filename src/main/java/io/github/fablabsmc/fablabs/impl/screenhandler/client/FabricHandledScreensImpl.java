@@ -15,12 +15,10 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 @Environment(EnvType.CLIENT)
-public final class FabricHandledScreensImpl implements FabricHandledScreens {
-	public static final FabricHandledScreensImpl INSTANCE = new FabricHandledScreensImpl();
+public enum FabricHandledScreensImpl implements FabricHandledScreens {
+	INSTANCE;
 
 	private static final Map<ScreenHandlerType<?>, FabricHandledScreens.Factory<?, ?>> FACTORIES = new HashMap<>();
-
-	private FabricHandledScreensImpl() { }
 
 	public static FabricHandledScreens.Factory<?, ?> getFactory(ScreenHandlerType<?> type) {
 		Objects.requireNonNull(type, "type is null");
