@@ -3,7 +3,7 @@ package io.github.fablabsmc.fablabs.mixin.screenhandler;
 import java.util.OptionalInt;
 
 import io.github.fablabsmc.fablabs.api.screenhandler.v1.ExtendedScreenHandlerFactory;
-import io.github.fablabsmc.fablabs.impl.screenhandler.ScreenHandlerTypeBridge;
+import io.github.fablabsmc.fablabs.impl.screenhandler.ExtendedScreenHandlerType;
 import io.github.fablabsmc.fablabs.impl.screenhandler.ScreenHandlersImpl;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -33,7 +33,7 @@ public class ServerPlayerEntityMixin {
 			locals = LocalCapture.CAPTURE_FAILHARD
 	)
 	private void fablabs_checkForIncorrectHandlers(NamedScreenHandlerFactory factory, CallbackInfoReturnable<OptionalInt> info, ScreenHandler handler) {
-		if (((ScreenHandlerTypeBridge<?>) handler.getType()).fablabs_hasExtraData()) {
+		if (handler.getType() instanceof ExtendedScreenHandlerType<?>) {
 			Identifier id = Registry.SCREEN_HANDLER.getId(handler.getType());
 			throw new IllegalArgumentException("[FabLabs] Screen handler " + id + " with extra data must be opened with an ExtendedScreenHandlerFactory!");
 		}

@@ -42,9 +42,7 @@ public final class ScreenHandlersImpl implements ScreenHandlers {
 	@Override
 	public <T extends ScreenHandler> ScreenHandlerType<T> simple(SimpleFactory<T> factory) {
 		try {
-			ScreenHandlerType<T> result = (ScreenHandlerType<T>) CONSTRUCTOR.get().invoke(null);
-			((ScreenHandlerTypeBridge<T>) result).fablabs_setFactory(((syncId, inventory, buf) -> factory.create(syncId, inventory)));
-			return result;
+			return new ScreenHandlerType<>(factory::create);
 		} catch (Throwable t) {
 			throw new RuntimeException("Could not construct ScreenHandlerType!", t);
 		}
@@ -54,11 +52,7 @@ public final class ScreenHandlersImpl implements ScreenHandlers {
 	@Override
 	public <T extends ScreenHandler> ScreenHandlerType<T> extended(ExtendedFactory<T> factory) {
 		try {
-			ScreenHandlerType<T> result = (ScreenHandlerType<T>) CONSTRUCTOR.get().invoke(null);
-			ScreenHandlerTypeBridge<T> bridge = (ScreenHandlerTypeBridge<T>) result;
-			bridge.fablabs_setFactory(factory);
-			bridge.fablabs_setHasExtraData(true);
-			return result;
+			return new ExtendedScreenHandlerType<>(factory);
 		} catch (Throwable t) {
 			throw new RuntimeException("Could not construct ScreenHandlerType!", t);
 		}
