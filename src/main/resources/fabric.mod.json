@@ -17,6 +17,7 @@
   "mixins": [
     "mixins.${libname}.json"
   ],
+  "accessWidener": "screen-handlers.accessWidener.txt",
   "depends": {
     "fabricloader": ">=0.4.0"
   },
