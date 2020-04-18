@@ -27,7 +27,7 @@ public interface FabricHandledScreens {
 	 * @param <T>           the screen handler type
 	 * @param <U>           the screen type
 	 */
-	<T extends ScreenHandler, U extends Screen & ScreenHandlerProvider<? extends T>> void register(ScreenHandlerType<? extends T> type, Factory<? super T, ? extends U> screenFactory);
+	<T extends ScreenHandler, U extends Screen & ScreenHandlerProvider<T>> void register(ScreenHandlerType<? extends T> type, Factory<? super T, ? extends U> screenFactory);
 
 	/**
 	 * A factory for handled screens.
@@ -36,7 +36,7 @@ public interface FabricHandledScreens {
 	 * @param <U> the screen type
 	 */
 	@FunctionalInterface
-	interface Factory<T extends ScreenHandler, U extends Screen & ScreenHandlerProvider<? extends T>> {
+	interface Factory<T extends ScreenHandler, U extends Screen & ScreenHandlerProvider<T>> {
 		/**
 		 * Creates a new handled screen.
 		 *
