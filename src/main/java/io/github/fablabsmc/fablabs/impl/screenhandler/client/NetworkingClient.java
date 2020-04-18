@@ -1,14 +1,13 @@
 package io.github.fablabsmc.fablabs.impl.screenhandler.client;
 
-import io.github.fablabsmc.fablabs.api.screenhandler.v1.ScreenHandlers;
-import io.github.fablabsmc.fablabs.api.screenhandler.v1.client.FabricHandledScreens;
+import io.github.fablabsmc.fablabs.impl.screenhandler.ExtendedScreenHandlerType;
 import io.github.fablabsmc.fablabs.impl.screenhandler.Packets;
-import io.github.fablabsmc.fablabs.impl.screenhandler.ScreenHandlerTypeBridge;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.gui.screen.ingame.ScreenHandlerProvider;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketByteBuf;
@@ -42,22 +41,19 @@ public final class NetworkingClient implements ClientModInitializer {
 			return;
 		}
 
-		ScreenHandlerTypeBridge<?> bridge = (ScreenHandlerTypeBridge<?>) type;
-
-		if (!bridge.fablabs_hasExtraData()) {
+		if (!(type instanceof ExtendedScreenHandlerType<?>)) {
 			LOGGER.warn("[FabLabs] Received extended opening packet for screen handler {} without extra data", Registry.SCREEN_HANDLER.getId(type));
 			return;
 		}
 
-		FabricHandledScreens.Factory screenFactory = FabricHandledScreensImpl.getFactory(type);
+		HandledScreens.Provider screenFactory = HandledScreens.getProvider(type);
 
 		if (screenFactory != null) {
 			MinecraftClient client = MinecraftClient.getInstance();
 			PlayerEntity player = client.player;
 
-			ScreenHandlers.ExtendedFactory<?> factory = bridge.fablabs_getFactory();
 			Screen screen = screenFactory.create(
-					factory.create(syncId, player.inventory, buf),
+					((ExtendedScreenHandlerType<?>) type).create(syncId, player.inventory, buf),
 					player.inventory,
 					title
 			);

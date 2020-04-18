@@ -17,6 +17,7 @@
   "mixins": [
     "mixins.${libname}.json"
   ],
+  "accessWidener": "fablabs-screen-handlers-v1.accesswidener",
   "depends": {
     "fabricloader": ">=0.4.0"
   },

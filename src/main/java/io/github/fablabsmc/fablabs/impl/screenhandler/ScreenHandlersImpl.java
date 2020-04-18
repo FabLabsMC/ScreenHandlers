@@ -1,89 +1,48 @@
 package io.github.fablabsmc.fablabs.impl.screenhandler;
 
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
-import java.lang.reflect.Constructor;
 import java.util.Objects;
-import java.util.OptionalInt;
 
 import io.github.fablabsmc.fablabs.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import io.github.fablabsmc.fablabs.api.screenhandler.v1.ScreenHandlers;
-import io.github.fablabsmc.fablabs.mixin.screenhandler.ServerPlayerEntityAccessor;
 import io.netty.buffer.Unpooled;
 
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Lazy;
 import net.minecraft.util.registry.Registry;
 
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
 
 public final class ScreenHandlersImpl implements ScreenHandlers {
-	public static final ScreenHandlersImpl INSTANCE = new ScreenHandlersImpl();
-
-	private static final Lazy<MethodHandle> CONSTRUCTOR = new Lazy<>(() -> {
-		try {
-			Constructor<?> ctor = ScreenHandlerType.class.getDeclaredConstructors()[0];
-			ctor.setAccessible(true);
-			return MethodHandles.lookup().unreflectConstructor(ctor);
-		} catch (IllegalAccessException e) {
-			throw new IllegalStateException("Could not find private ScreenHandlerType constructor!", e);
-		}
-	});
+	public static final ScreenHandlers INSTANCE = new ScreenHandlersImpl();
 
 	private ScreenHandlersImpl() {
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends ScreenHandler> ScreenHandlerType<T> simple(SimpleFactory<T> factory) {
-		try {
-			ScreenHandlerType<T> result = (ScreenHandlerType<T>) CONSTRUCTOR.get().invoke(null);
-			((ScreenHandlerTypeBridge<T>) result).fablabs_setFactory(((syncId, inventory, buf) -> factory.create(syncId, inventory)));
-			return result;
-		} catch (Throwable t) {
-			throw new RuntimeException("Could not construct ScreenHandlerType!", t);
-		}
+		// Wrap our factory in vanilla's factory; it will not be public for users.
+		return new ScreenHandlerType<>(factory::create);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends ScreenHandler> ScreenHandlerType<T> extended(ExtendedFactory<T> factory) {
-		try {
-			ScreenHandlerType<T> result = (ScreenHandlerType<T>) CONSTRUCTOR.get().invoke(null);
-			ScreenHandlerTypeBridge<T> bridge = (ScreenHandlerTypeBridge<T>) result;
-			bridge.fablabs_setFactory(factory);
-			bridge.fablabs_setHasExtraData(true);
-			return result;
-		} catch (Throwable t) {
-			throw new RuntimeException("Could not construct ScreenHandlerType!", t);
-		}
+		return new ExtendedScreenHandlerType<>(factory);
 	}
 
-	public OptionalInt open(ServerPlayerEntity player, ExtendedScreenHandlerFactory factory) {
+	/**
+	 * Opens an extended screen handler by sending a custom packet to the client.
+	 *
+	 * @param player  the player
+	 * @param factory the screen handler factory
+	 * @param handler the screen handler instance
+	 * @param syncId  the synchronization ID
+	 */
+	public static void sendOpenPacket(ServerPlayerEntity player, ExtendedScreenHandlerFactory factory, ScreenHandler handler, int syncId) {
 		Objects.requireNonNull(player, "player is null");
 		Objects.requireNonNull(factory, "factory is null");
-		ServerPlayerEntityAccessor bridge = (ServerPlayerEntityAccessor) player;
-
-		if (player.currentScreenHandler != player.playerScreenHandler) {
-			player.closeHandledScreen();
-		}
-
-		bridge.callIncrementScreenHandlerSyncId();
-		int syncId = bridge.getScreenHandlerSyncId();
-		ScreenHandler handler = factory.createMenu(syncId, player.inventory, player);
-
-		if (handler == null) {
-			if (player.isSpectator()) {
-				player.addMessage((new TranslatableText("container.spectatorCantOpen")).formatted(Formatting.RED), true);
-			}
-
-			return OptionalInt.empty();
-		}
+		Objects.requireNonNull(handler, "handler is null");
 
 		PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
 		buf.writeVarInt(Registry.SCREEN_HANDLER.getRawId(handler.getType()));
@@ -92,8 +51,5 @@ public final class ScreenHandlersImpl implements ScreenHandlers {
 		factory.writeScreenData(buf);
 
 		ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, Packets.OPEN_ID, buf);
-		handler.addListener(player);
-		player.currentScreenHandler = handler;
-		return OptionalInt.of(syncId);
 	}
 }
