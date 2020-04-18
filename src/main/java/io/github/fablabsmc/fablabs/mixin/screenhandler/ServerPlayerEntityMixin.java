@@ -28,28 +28,28 @@ public class ServerPlayerEntityMixin {
 	private int screenHandlerSyncId;
 
 	@Unique
-	private final ThreadLocal<ScreenHandler> fabric_openedScreenHandler = new ThreadLocal<>();
+	private final ThreadLocal<ScreenHandler> fablabs_openedScreenHandler = new ThreadLocal<>();
 
-	@Inject(method = "openHandledScreen(Lnet/minecraft/screen/NamedScreenHandlerFactory;)Ljava/util/OptionalInt;", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/screen/ScreenHandlerFactory;createMenu(ILnet/minecraft/entity/player/PlayerInventory;Lnet/minecraft/entity/player/PlayerEntity;)Lnet/minecraft/screen/ScreenHandler;"), locals = LocalCapture.CAPTURE_FAILHARD)
-	private void fabric_onOpenHandledScreen_createMenu(NamedScreenHandlerFactory factory, CallbackInfoReturnable<OptionalInt> info, ScreenHandler handler) {
+	@Inject(method = "openHandledScreen(Lnet/minecraft/screen/NamedScreenHandlerFactory;)Ljava/util/OptionalInt;", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayNetworkHandler;sendPacket(Lnet/minecraft/network/Packet;)V"), locals = LocalCapture.CAPTURE_FAILHARD)
+	private void fablabs_onOpenHandledScreen_cacheScreenHandler(NamedScreenHandlerFactory factory, CallbackInfoReturnable<OptionalInt> info, ScreenHandler handler) {
 		if (factory instanceof ExtendedScreenHandlerFactory) {
-			fabric_openedScreenHandler.set(handler);
+			fablabs_openedScreenHandler.set(handler);
 		} else if (handler.getType() instanceof ExtendedScreenHandlerType<?>) {
 			Identifier id = Registry.SCREEN_HANDLER.getId(handler.getType());
-			throw new IllegalArgumentException("[Fabric] Extended screen handler " + id + " must be opened with an ExtendedScreenHandlerFactory!");
+			throw new IllegalArgumentException("[FabLabs] Extended screen handler " + id + " must be opened with an ExtendedScreenHandlerFactory!");
 		}
 	}
 
 	@Redirect(method = "openHandledScreen(Lnet/minecraft/screen/NamedScreenHandlerFactory;)Ljava/util/OptionalInt;", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayNetworkHandler;sendPacket(Lnet/minecraft/network/Packet;)V"))
-	private void fabric_onOpenHandledScreen_redirectPacket(ServerPlayNetworkHandler networkHandler, Packet<?> packet, NamedScreenHandlerFactory factory) {
+	private void fablabs_onOpenHandledScreen_redirectPacket(ServerPlayNetworkHandler networkHandler, Packet<?> packet, NamedScreenHandlerFactory factory) {
 		if (factory instanceof ExtendedScreenHandlerFactory) {
-			ScreenHandler handler = fabric_openedScreenHandler.get();
+			ScreenHandler handler = fablabs_openedScreenHandler.get();
 
 			if (handler.getType() instanceof ExtendedScreenHandlerType<?>) {
 				ScreenHandlersImpl.sendOpenPacket((ServerPlayerEntity) (Object) this, (ExtendedScreenHandlerFactory) factory, handler, screenHandlerSyncId);
 			} else {
 				Identifier id = Registry.SCREEN_HANDLER.getId(handler.getType());
-				throw new IllegalArgumentException("[Fabric] Non-extended screen handler " + id + " must not be opened with an ExtendedScreenHandlerFactory!");
+				throw new IllegalArgumentException("[FabLabs] Non-extended screen handler " + id + " must not be opened with an ExtendedScreenHandlerFactory!");
 			}
 		} else {
 			networkHandler.sendPacket(packet);
@@ -57,7 +57,7 @@ public class ServerPlayerEntityMixin {
 	}
 
 	@Inject(method = "openHandledScreen(Lnet/minecraft/screen/NamedScreenHandlerFactory;)Ljava/util/OptionalInt;", at = @At("RETURN"))
-	private void fabric_onOpenHandledScreen_return(NamedScreenHandlerFactory factory, CallbackInfoReturnable<OptionalInt> info) {
-		fabric_openedScreenHandler.remove();
+	private void fablabs_onOpenHandledScreen_return(NamedScreenHandlerFactory factory, CallbackInfoReturnable<OptionalInt> info) {
+		fablabs_openedScreenHandler.remove();
 	}
 }
