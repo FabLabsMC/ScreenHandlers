@@ -1,5 +1,7 @@
 package io.github.fablabsmc.fablabs.impl.screenhandler.example.item;
 
+import java.util.List;
+
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
@@ -9,16 +11,14 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.Direction;
 
-import java.util.List;
-
 /**
  * A simple {@code SidedInventory} implementation with only default methods + an item list getter.
  *
  * <h2>Reading and writing to tags</h2>
  * Use {@link Inventories#fromTag(CompoundTag, DefaultedList)} and {@link Inventories#toTag(CompoundTag, DefaultedList)}
  * on {@linkplain #getItems() the item list}.
- * <p>
- * License: <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0</a>
+ *
+ * <p>License: <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0</a>
  *
  * @author Juuz
  */
@@ -67,6 +67,7 @@ public interface ImplementedInventory extends SidedInventory {
 	@Override
 	default int[] getAvailableSlots(Direction side) {
 		int[] result = new int[getItems().size()];
+
 		for (int i = 0; i < result.length; i++) {
 			result[i] = i;
 		}
@@ -125,6 +126,7 @@ public interface ImplementedInventory extends SidedInventory {
 	default boolean isEmpty() {
 		for (int i = 0; i < size(); i++) {
 			ItemStack stack = getStack(i);
+
 			if (!stack.isEmpty()) {
 				return false;
 			}
@@ -157,6 +159,7 @@ public interface ImplementedInventory extends SidedInventory {
 	@Override
 	default ItemStack removeStack(int slot, int count) {
 		ItemStack result = Inventories.splitStack(getItems(), slot, count);
+
 		if (!result.isEmpty()) {
 			markDirty();
 		}
@@ -189,6 +192,7 @@ public interface ImplementedInventory extends SidedInventory {
 	@Override
 	default void setStack(int slot, ItemStack stack) {
 		getItems().set(slot, stack);
+
 		if (stack.getCount() > getMaxCountPerStack()) {
 			stack.setCount(getMaxCountPerStack());
 		}

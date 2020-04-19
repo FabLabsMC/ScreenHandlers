@@ -1,6 +1,7 @@
 package io.github.fablabsmc.fablabs.impl.screenhandler.example.item;
 
 import io.github.fablabsmc.fablabs.impl.screenhandler.example.screen.BagScreenHandler;
+
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

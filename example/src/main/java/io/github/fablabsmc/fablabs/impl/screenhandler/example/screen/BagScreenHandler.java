@@ -2,6 +2,7 @@ package io.github.fablabsmc.fablabs.impl.screenhandler.example.screen;
 
 import io.github.fablabsmc.fablabs.impl.screenhandler.example.Example;
 import io.github.fablabsmc.fablabs.impl.screenhandler.example.item.BagItem;
+
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.BasicInventory;

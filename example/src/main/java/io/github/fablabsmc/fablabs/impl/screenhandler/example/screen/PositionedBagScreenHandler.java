@@ -1,6 +1,7 @@
 package io.github.fablabsmc.fablabs.impl.screenhandler.example.screen;
 
 import io.github.fablabsmc.fablabs.impl.screenhandler.example.Example;
+
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.BasicInventory;
 import net.minecraft.inventory.Inventory;

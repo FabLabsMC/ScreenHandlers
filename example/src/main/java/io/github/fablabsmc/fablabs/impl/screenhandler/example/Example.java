@@ -15,8 +15,8 @@ import net.minecraft.util.registry.Registry;
 public class Example implements ModInitializer {
 	public static final Item BAG = new BagItem(new Item.Settings().group(ItemGroup.TOOLS).maxCount(1));
 	public static final Item POSITIONED_BAG = new PositionedBagItem(new Item.Settings().group(ItemGroup.TOOLS).maxCount(1));
-	public static final ScreenHandlerType<BagScreenHandler> BAG_SCREEN_HANDLER = ScreenHandlers.INSTANCE.simple(BagScreenHandler::new);
-	public static final ScreenHandlerType<PositionedBagScreenHandler> POSITIONED_BAG_SCREEN_HANDLER = ScreenHandlers.INSTANCE.extended(PositionedBagScreenHandler::new);
+	public static final ScreenHandlerType<BagScreenHandler> BAG_SCREEN_HANDLER = ScreenHandlers.simple(BagScreenHandler::new);
+	public static final ScreenHandlerType<PositionedBagScreenHandler> POSITIONED_BAG_SCREEN_HANDLER = ScreenHandlers.extended(PositionedBagScreenHandler::new);
 
 	@Override
 	public void onInitialize() {

@@ -2,6 +2,7 @@ package io.github.fablabsmc.fablabs.impl.screenhandler.example.client;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.fablabsmc.fablabs.impl.screenhandler.example.screen.PositionedBagScreenHandler;
+
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
