@@ -13,7 +13,7 @@ import net.fabricmc.api.Environment;
 public final class ExtendedScreenHandlerType<T extends ScreenHandler> extends ScreenHandlerType<T> {
 	private final ScreenHandlers.ExtendedFactory<T> factory;
 
-	ExtendedScreenHandlerType(ScreenHandlers.ExtendedFactory<T> factory) {
+	public ExtendedScreenHandlerType(ScreenHandlers.ExtendedFactory<T> factory) {
 		super(null);
 		this.factory = factory;
 	}

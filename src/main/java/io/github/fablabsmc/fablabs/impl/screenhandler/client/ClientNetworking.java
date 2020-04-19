@@ -1,7 +1,7 @@
 package io.github.fablabsmc.fablabs.impl.screenhandler.client;
 
 import io.github.fablabsmc.fablabs.impl.screenhandler.ExtendedScreenHandlerType;
-import io.github.fablabsmc.fablabs.impl.screenhandler.Packets;
+import io.github.fablabsmc.fablabs.impl.screenhandler.Networking;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -13,6 +13,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 import net.fabricmc.api.ClientModInitializer;
@@ -21,28 +22,31 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
 
 @Environment(EnvType.CLIENT)
-public final class NetworkingClient implements ClientModInitializer {
-	private static final Logger LOGGER = LogManager.getLogger();
+public final class ClientNetworking implements ClientModInitializer {
+	private static final Logger LOGGER = LogManager.getLogger("fablabs-screen-handlers-v1");
 
 	@Override
 	public void onInitializeClient() {
-		ClientSidePacketRegistry.INSTANCE.register(Packets.OPEN_ID, (ctx, buf) -> openScreen(buf));
+		ClientSidePacketRegistry.INSTANCE.register(Networking.OPEN_ID, (ctx, buf) -> {
+			Identifier typeId = buf.readIdentifier();
+			int syncId = buf.readVarInt();
+			Text title = buf.readText();
+			buf.retain();
+			ctx.getTaskQueue().execute(() -> openScreen(typeId, syncId, title, buf));
+		});
 	}
 
 	@SuppressWarnings({"rawtypes", "unchecked"})
-	private void openScreen(PacketByteBuf buf) {
-		int typeId = buf.readVarInt();
-		int syncId = buf.readVarInt();
-		Text title = buf.readText();
+	private void openScreen(Identifier typeId, int syncId, Text title, PacketByteBuf buf) {
 		ScreenHandlerType<?> type = Registry.SCREEN_HANDLER.get(typeId);
 
 		if (type == null) {
-			LOGGER.warn("[FabLabs] Unknown screen handler ID: {}", typeId);
+			LOGGER.warn("Unknown screen handler ID: {}", typeId);
 			return;
 		}
 
 		if (!(type instanceof ExtendedScreenHandlerType<?>)) {
-			LOGGER.warn("[FabLabs] Received extended opening packet for screen handler {} without extra data", Registry.SCREEN_HANDLER.getId(type));
+			LOGGER.warn("Received extended opening packet for non-extended screen handler {}", typeId);
 			return;
 		}
 
@@ -58,12 +62,10 @@ public final class NetworkingClient implements ClientModInitializer {
 					title
 			);
 
-			MinecraftClient.getInstance().execute(() -> {
-				player.currentScreenHandler = ((ScreenHandlerProvider<?>) screen).getScreenHandler();
-				client.openScreen(screen);
-			});
+			player.currentScreenHandler = ((ScreenHandlerProvider<?>) screen).getScreenHandler();
+			client.openScreen(screen);
 		} else {
-			LOGGER.warn("[FabLabs] Screen not registered for screen handler {}!", title);
+			LOGGER.warn("Screen not registered for screen handler {}!", title);
 		}
 	}
 }

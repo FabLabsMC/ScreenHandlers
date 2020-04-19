@@ -12,14 +12,16 @@
   },
   "environment": "*",
   "entrypoints": {
-    "client": ["io.github.fablabsmc.fablabs.impl.screenhandler.client.NetworkingClient"]
+    "client": ["io.github.fablabsmc.fablabs.impl.screenhandler.client.ClientNetworking"]
   },
   "mixins": [
     "mixins.${libname}.json"
   ],
   "accessWidener": "fablabs-screen-handlers-v1.accesswidener",
   "depends": {
-    "fabricloader": ">=0.4.0"
+    "fabricloader": ">=0.4.0",
+    "fabric-api-base": "*",
+    "fabric-networking-v0": "*"
   },
   "custom": {
     "modmenu:api": true
