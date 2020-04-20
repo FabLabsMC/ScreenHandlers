@@ -1,0 +1,5 @@
+{
+  "variants": {
+    "": { "model": "fablabs-screen-handlers-example:block/box" }
+  }
+}

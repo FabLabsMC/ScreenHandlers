@@ -8,7 +8,7 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.math.BlockPos;
 
-public class PositionedBagScreenHandler extends BagScreenHandler {
+public class PositionedBagScreenHandler extends BagScreenHandler implements PositionedScreenHandler {
 	private final BlockPos pos;
 
 	public PositionedBagScreenHandler(int syncId, PlayerInventory playerInventory, PacketByteBuf buf) {
@@ -26,6 +26,7 @@ public class PositionedBagScreenHandler extends BagScreenHandler {
 		this.pos = pos;
 	}
 
+	@Override
 	public BlockPos getPos() {
 		return pos;
 	}

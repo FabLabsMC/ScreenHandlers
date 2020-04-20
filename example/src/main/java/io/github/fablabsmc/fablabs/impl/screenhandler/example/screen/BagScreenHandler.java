@@ -37,6 +37,7 @@ public class BagScreenHandler extends Generic3x3ContainerScreenHandler {
 	public ItemStack onSlotClick(int slotId, int clickData, SlotActionType actionType, PlayerEntity playerEntity) {
 		if (slotId >= 0) { // slotId < 0 are used for networking internals
 			ItemStack stack = getSlot(slotId).getStack();
+
 			if (stack.getItem() instanceof BagItem) {
 				// Prevent moving bags around
 				return stack;

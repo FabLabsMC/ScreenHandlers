@@ -1,18 +1,19 @@
 package io.github.fablabsmc.fablabs.impl.screenhandler.example.client;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import io.github.fablabsmc.fablabs.impl.screenhandler.example.screen.PositionedBagScreenHandler;
+import io.github.fablabsmc.fablabs.impl.screenhandler.example.screen.PositionedScreenHandler;
 
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 
-public class PositionedBagScreen extends HandledScreen<PositionedBagScreenHandler> {
+public class PositionedScreen<T extends ScreenHandler & PositionedScreenHandler> extends HandledScreen<T> {
 	private static final Identifier TEXTURE = new Identifier("minecraft", "textures/gui/container/dispenser.png");
 
-	public PositionedBagScreen(PositionedBagScreenHandler handler, PlayerInventory inventory, Text title) {
+	public PositionedScreen(T handler, PlayerInventory inventory, Text title) {
 		super(handler, inventory, title);
 	}
 

@@ -12,6 +12,7 @@ final class BagInventory implements ImplementedInventory {
 	BagInventory(ItemStack stack) {
 		this.stack = stack;
 		CompoundTag tag = stack.getSubTag("Items");
+
 		if (tag != null) {
 			Inventories.fromTag(tag, items);
 		}

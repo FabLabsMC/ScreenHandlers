@@ -1,5 +1,6 @@
 plugins {
     id 'fabric-loom'
+    id 'checkstyle'
 }
 
 dependencies {
@@ -11,4 +12,9 @@ dependencies {
     implementation(project(':')) {
         exclude module: 'minecraft'
     }
+}
+
+checkstyle {
+    configFile = rootProject.file("checkstyle.xml")
+    toolVersion = '8.25'
 }

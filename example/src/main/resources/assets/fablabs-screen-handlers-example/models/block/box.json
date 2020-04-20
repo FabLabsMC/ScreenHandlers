@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "fablabs-screen-handlers-example:block/box"
+  }
+}
