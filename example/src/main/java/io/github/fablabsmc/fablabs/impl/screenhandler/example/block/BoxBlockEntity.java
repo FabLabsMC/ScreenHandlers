@@ -9,6 +9,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.collection.DefaultedList;
@@ -46,7 +47,7 @@ public class BoxBlockEntity extends LootableContainerBlockEntity implements Exte
 	}
 
 	@Override
-	public void writeScreenData(PacketByteBuf buf) {
+	public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf) {
 		buf.writeBlockPos(pos);
 	}
 }

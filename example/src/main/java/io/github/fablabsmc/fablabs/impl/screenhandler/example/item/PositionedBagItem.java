@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -50,7 +51,7 @@ public class PositionedBagItem extends BagItem {
 			}
 
 			@Override
-			public void writeScreenData(PacketByteBuf buf) {
+			public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf) {
 				buf.writeBoolean(pos != null);
 				buf.writeBlockPos(pos != null ? pos : BlockPos.ORIGIN);
 			}
