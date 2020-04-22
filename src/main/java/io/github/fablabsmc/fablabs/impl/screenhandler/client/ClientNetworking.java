@@ -8,9 +8,9 @@ import org.apache.logging.log4j.Logger;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
-import net.minecraft.client.gui.screen.ingame.ScreenHandlerProvider;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -56,13 +56,9 @@ public final class ClientNetworking implements ClientModInitializer {
 			MinecraftClient client = MinecraftClient.getInstance();
 			PlayerEntity player = client.player;
 
-			Screen screen = screenFactory.create(
-					((ExtendedScreenHandlerType<?>) type).create(syncId, player.inventory, buf),
-					player.inventory,
-					title
-			);
-
-			player.currentScreenHandler = ((ScreenHandlerProvider<?>) screen).getScreenHandler();
+			ScreenHandler handler = ((ExtendedScreenHandlerType<?>) type).create(syncId, player.inventory, buf);
+			Screen screen = screenFactory.create(handler, player.inventory, title);
+			player.currentScreenHandler = handler;
 			client.openScreen(screen);
 		} else {
 			LOGGER.warn("Screen not registered for screen handler {}!", title);
