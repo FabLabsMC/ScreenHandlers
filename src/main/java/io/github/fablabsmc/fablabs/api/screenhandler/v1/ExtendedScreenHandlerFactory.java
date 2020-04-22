@@ -8,7 +8,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
  * An extension of {@code NamedScreenHandlerFactory} that can write additional
  * networking data to a screen opening packet.
  *
- * @see ScreenHandlers#extended(ScreenHandlers.ExtendedFactory)
+ * @see ScreenHandlers#extended(ScreenHandlers.ExtendedClientHandlerFactory)
  */
 public interface ExtendedScreenHandlerFactory extends NamedScreenHandlerFactory {
 	/**

@@ -11,7 +11,10 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 /**
- * An API for creating screen handler types.
+ * An API for creating {@linkplain ScreenHandlerType screen handler types}.
+ *
+ * <p>This class exposes the private {@link ScreenHandlerType} constructor,
+ * as well as adds support for creating types using Fabric's extended screen handler API.
  *
  * <p>Screen handlers types are used to synchronize {@linkplain ScreenHandler screen handlers}
  * between the server and the client. Screen handlers manage the items and integer properties that are
@@ -57,7 +60,7 @@ public final class ScreenHandlers {
 	 * @param <T>     the screen handler type
 	 * @return the created type object
 	 */
-	public static <T extends ScreenHandler> ScreenHandlerType<T> simple(SimpleFactory<T> factory) {
+	public static <T extends ScreenHandler> ScreenHandlerType<T> simple(SimpleClientHandlerFactory<T> factory) {
 		// Wrap our factory in vanilla's factory; it will not be public for users.
 		return new ScreenHandlerType<>(factory::create);
 	}
@@ -72,7 +75,7 @@ public final class ScreenHandlers {
 	 * @param <T>     the screen handler type
 	 * @return the created type object
 	 */
-	public static <T extends ScreenHandler> ScreenHandlerType<T> extended(ExtendedFactory<T> factory) {
+	public static <T extends ScreenHandler> ScreenHandlerType<T> extended(ExtendedClientHandlerFactory<T> factory) {
 		return new ExtendedScreenHandlerType<>(factory);
 	}
 
@@ -81,7 +84,7 @@ public final class ScreenHandlers {
 	 *
 	 * @param <T> the screen handler type
 	 */
-	public interface SimpleFactory<T extends ScreenHandler> {
+	public interface SimpleClientHandlerFactory<T extends ScreenHandler> {
 		/**
 		 * Creates a new client-sided screen handler.
 		 *
@@ -95,14 +98,14 @@ public final class ScreenHandlers {
 
 	/**
 	 * A factory for client-sided screen handler instances
-	 * with additional synced opening data.
+	 * with additional screen opening data.
 	 *
 	 * @param <T> the screen handler type
 	 * @see ExtendedScreenHandlerFactory
 	 */
-	public interface ExtendedFactory<T extends ScreenHandler> {
+	public interface ExtendedClientHandlerFactory<T extends ScreenHandler> {
 		/**
-		 * Creates a new client-sided screen handler with additional opening data.
+		 * Creates a new client-sided screen handler with additional screen opening data.
 		 *
 		 * @param syncId    the synchronization ID
 		 * @param inventory the player inventory
