@@ -6,6 +6,8 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -33,10 +35,7 @@ import net.fabricmc.api.Environment;
  * <pre>
  * {@code
  * // Creating the screen handler type
- * public static final ScreenHandlerType<OvenScreenHandler> OVEN = ScreenHandlerTypes.simple(OvenScreenHandler::new);
- *
- * // Registering the type
- * Registry.register(Registry.SCREEN_HANDLER, new Identifier("my_mod", "oven"), OVEN);
+ * public static final ScreenHandlerType<OvenScreenHandler> OVEN = FabricScreenHandlerTypes.simple(new Identifier("my_mod", "oven"), OvenScreenHandler::new);
  *
  * // Screen handler class
  * public class OvenScreenHandler extends ScreenHandler {
@@ -49,34 +48,38 @@ import net.fabricmc.api.Environment;
  *
  * @see io.github.fablabsmc.fablabs.api.client.screenhandler.v1.FabricHandledScreens registering screens for screen handlers
  */
-public final class ScreenHandlerTypes {
-	private ScreenHandlerTypes() {
+public final class FabricScreenHandlerTypes {
+	private FabricScreenHandlerTypes() {
 	}
 
 	/**
-	 * Creates a new {@code ScreenHandlerType} that creates client-sided screen handlers using the factory.
+	 * Creates and registers a new {@code ScreenHandlerType} that creates client-sided screen handlers using the factory.
 	 *
+	 * @param id      the registry ID
 	 * @param factory the client-sided screen handler factory
 	 * @param <T>     the screen handler type
 	 * @return the created type object
 	 */
-	public static <T extends ScreenHandler> ScreenHandlerType<T> simple(SimpleClientHandlerFactory<T> factory) {
+	public static <T extends ScreenHandler> ScreenHandlerType<T> simple(Identifier id, SimpleClientHandlerFactory<T> factory) {
 		// Wrap our factory in vanilla's factory; it will not be public for users.
-		return new ScreenHandlerType<>(factory::create);
+		ScreenHandlerType<T> type = new ScreenHandlerType<>(factory::create);
+		return Registry.register(Registry.SCREEN_HANDLER, id, type);
 	}
 
 	/**
-	 * Creates a new {@code ScreenHandlerType} that creates client-sided screen handlers with additional
+	 * Creates and registers a new {@code ScreenHandlerType} that creates client-sided screen handlers with additional
 	 * networked opening data.
 	 *
 	 * <p>These screen handlers must be opened with a {@link ExtendedScreenHandlerFactory}.
 	 *
+	 * @param id      the registry ID
 	 * @param factory the client-sided screen handler factory
 	 * @param <T>     the screen handler type
 	 * @return the created type object
 	 */
-	public static <T extends ScreenHandler> ScreenHandlerType<T> extended(ExtendedClientHandlerFactory<T> factory) {
-		return new ExtendedScreenHandlerType<>(factory);
+	public static <T extends ScreenHandler> ScreenHandlerType<T> extended(Identifier id, ExtendedClientHandlerFactory<T> factory) {
+		ScreenHandlerType<T> type = new ExtendedScreenHandlerType<>(factory);
+		return Registry.register(Registry.SCREEN_HANDLER, id, type);
 	}
 
 	/**

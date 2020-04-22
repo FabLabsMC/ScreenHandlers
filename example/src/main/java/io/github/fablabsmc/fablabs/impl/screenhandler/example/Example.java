@@ -1,6 +1,6 @@
 package io.github.fablabsmc.fablabs.impl.screenhandler.example;
 
-import io.github.fablabsmc.fablabs.api.screenhandler.v1.ScreenHandlerTypes;
+import io.github.fablabsmc.fablabs.api.screenhandler.v1.FabricScreenHandlerTypes;
 import io.github.fablabsmc.fablabs.impl.screenhandler.example.block.BoxBlock;
 import io.github.fablabsmc.fablabs.impl.screenhandler.example.block.BoxBlockEntity;
 import io.github.fablabsmc.fablabs.impl.screenhandler.example.item.BagItem;
@@ -30,19 +30,20 @@ public class Example implements ModInitializer {
 	public static final Block BOX = new BoxBlock(AbstractBlock.Settings.copy(Blocks.OAK_WOOD));
 	public static final Item BOX_ITEM = new BlockItem(BOX, new Item.Settings().group(ItemGroup.DECORATIONS));
 	public static final BlockEntityType<?> BOX_ENTITY = BlockEntityType.Builder.create(BoxBlockEntity::new, BOX).build(null);
-	public static final ScreenHandlerType<BagScreenHandler> BAG_SCREEN_HANDLER = ScreenHandlerTypes.simple(BagScreenHandler::new);
-	public static final ScreenHandlerType<PositionedBagScreenHandler> POSITIONED_BAG_SCREEN_HANDLER = ScreenHandlerTypes.extended(PositionedBagScreenHandler::new);
-	public static final ScreenHandlerType<BoxScreenHandler> BOX_SCREEN_HANDLER = ScreenHandlerTypes.extended(BoxScreenHandler::new);
+	public static final ScreenHandlerType<BagScreenHandler> BAG_SCREEN_HANDLER = FabricScreenHandlerTypes.simple(id("bag"), BagScreenHandler::new);
+	public static final ScreenHandlerType<PositionedBagScreenHandler> POSITIONED_BAG_SCREEN_HANDLER = FabricScreenHandlerTypes.extended(id("positioned_bag"), PositionedBagScreenHandler::new);
+	public static final ScreenHandlerType<BoxScreenHandler> BOX_SCREEN_HANDLER = FabricScreenHandlerTypes.extended(id("box"), BoxScreenHandler::new);
+
+	public static Identifier id(String path) {
+		return new Identifier(ID, path);
+	}
 
 	@Override
 	public void onInitialize() {
-		Registry.register(Registry.ITEM, new Identifier(ID, "bag"), BAG);
-		Registry.register(Registry.ITEM, new Identifier(ID, "positioned_bag"), POSITIONED_BAG);
-		Registry.register(Registry.BLOCK, new Identifier(ID, "box"), BOX);
-		Registry.register(Registry.ITEM, new Identifier(ID, "box"), BOX_ITEM);
-		Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(ID, "box"), BOX_ENTITY);
-		Registry.register(Registry.SCREEN_HANDLER, new Identifier(ID, "bag"), BAG_SCREEN_HANDLER);
-		Registry.register(Registry.SCREEN_HANDLER, new Identifier(ID, "positioned_bag"), POSITIONED_BAG_SCREEN_HANDLER);
-		Registry.register(Registry.SCREEN_HANDLER, new Identifier(ID, "box"), BOX_SCREEN_HANDLER);
+		Registry.register(Registry.ITEM, id("bag"), BAG);
+		Registry.register(Registry.ITEM, id("positioned_bag"), POSITIONED_BAG);
+		Registry.register(Registry.BLOCK, id("box"), BOX);
+		Registry.register(Registry.ITEM, id("box"), BOX_ITEM);
+		Registry.register(Registry.BLOCK_ENTITY_TYPE, id("box"), BOX_ENTITY);
 	}
 }
