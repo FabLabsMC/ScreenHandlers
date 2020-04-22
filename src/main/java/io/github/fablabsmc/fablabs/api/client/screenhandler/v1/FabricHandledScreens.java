@@ -12,7 +12,23 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 /**
- * An utility for registering screens with screen handlers.
+ * An API for registering screens that represent screen handlers on the client.
+ * Exposes vanilla's private {@link HandledScreens#register} to modders as {@link #register}.
+ *
+ * <h2>Example</h2>
+ * <pre>
+ * {@code
+ * // In a client-side initialization method:
+ * FabricHandledScreens.register(MyScreenHandlers.OVEN, OvenScreen::new);
+ *
+ * // Screen class
+ * public class OvenScreen extends HandledScreen<OvenScreenHandler> {
+ * 	public OvenScreen(OvenScreenHandler handler, PlayerInventory inventory, Text title) {
+ * 		super(handler, inventory, title);
+ * 	}
+ * }
+ * }
+ * </pre>
  */
 @Environment(EnvType.CLIENT)
 public final class FabricHandledScreens {

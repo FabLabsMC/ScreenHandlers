@@ -11,7 +11,40 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 /**
- * An utility for creating screen handler types.
+ * An API for creating screen handler types.
+ *
+ * <p>Screen handlers types are used to synchronize {@linkplain ScreenHandler screen handlers}
+ * between the server and the client. Screen handlers manage the items and integer properties that are
+ * needed to show on screens, such as the items in a chest or the progress of a furnace.
+ *
+ * <h2>Simple and extended screen handlers</h2>
+ * Simple screen handlers are the type of screen handlers used in vanilla.
+ * They can automatically synchronize items and integer properties between the server and the client,
+ * but they don't support having custom data sent in the opening packet.
+ *
+ * <p>This module adds <i>extended screen handlers</i> that can synchronize their own custom data
+ * when they are opened, which can be useful for defining additional properties of a screen on the server.
+ * For example, a mod can synchronize text that will show up as a label.
+ *
+ * <h2>Example</h2>
+ * <pre>
+ * {@code
+ * // Creating the screen handler type
+ * public static final ScreenHandlerType<OvenScreenHandler> OVEN = ScreenHandlers.simple(OvenScreenHandler::new);
+ *
+ * // Registering the type
+ * Registry.register(Registry.SCREEN_HANDLER, new Identifier("my_mod", "oven"), OVEN);
+ *
+ * // Screen handler class
+ * public class OvenScreenHandler extends ScreenHandler {
+ * 	public OvenScreenHandler(int syncId) {
+ * 		super(MyScreenHandlers.OVEN, syncId);
+ * 	}
+ * }
+ * }
+ * </pre>
+ *
+ * @see io.github.fablabsmc.fablabs.api.client.screenhandler.v1.FabricHandledScreens registering screens for screen handlers
  */
 public final class ScreenHandlers {
 	private ScreenHandlers() {
