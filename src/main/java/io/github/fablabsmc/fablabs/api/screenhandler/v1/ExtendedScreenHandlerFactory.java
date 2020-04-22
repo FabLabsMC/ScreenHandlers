@@ -5,14 +5,13 @@ import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 /**
- * An extension of {@code NamedScreenHandlerFactory} that can write additional
- * networking data to a screen opening packet.
+ * An extension of {@code NamedScreenHandlerFactory} that can write additional data to a screen opening packet.
  *
  * @see FabricScreenHandlerTypes#extended(net.minecraft.util.Identifier, FabricScreenHandlerTypes.ExtendedClientHandlerFactory)
  */
 public interface ExtendedScreenHandlerFactory extends NamedScreenHandlerFactory {
 	/**
-	 * Writes additional server -> client screen opening data to the buffer.
+	 * Writes additional server -&gt; client screen opening data to the buffer.
 	 *
 	 * @param player the player that is opening the screen
 	 * @param buf    the packet buffer

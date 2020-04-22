@@ -43,6 +43,10 @@ import net.fabricmc.api.Environment;
  * 		super(MyScreenHandlers.OVEN, syncId);
  * 	}
  * }
+ *
+ * // Opening the screen
+ * NamedScreenHandlerFactory factory = ...;
+ * player.openHandledScreen(factory); // only works on ServerPlayerEntity instances
  * }
  * </pre>
  *
