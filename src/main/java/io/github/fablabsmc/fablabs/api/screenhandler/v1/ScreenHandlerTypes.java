@@ -33,7 +33,7 @@ import net.fabricmc.api.Environment;
  * <pre>
  * {@code
  * // Creating the screen handler type
- * public static final ScreenHandlerType<OvenScreenHandler> OVEN = ScreenHandlers.simple(OvenScreenHandler::new);
+ * public static final ScreenHandlerType<OvenScreenHandler> OVEN = ScreenHandlerTypes.simple(OvenScreenHandler::new);
  *
  * // Registering the type
  * Registry.register(Registry.SCREEN_HANDLER, new Identifier("my_mod", "oven"), OVEN);
@@ -49,8 +49,8 @@ import net.fabricmc.api.Environment;
  *
  * @see io.github.fablabsmc.fablabs.api.client.screenhandler.v1.FabricHandledScreens registering screens for screen handlers
  */
-public final class ScreenHandlers {
-	private ScreenHandlers() {
+public final class ScreenHandlerTypes {
+	private ScreenHandlerTypes() {
 	}
 
 	/**
