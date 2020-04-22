@@ -1,4 +1,4 @@
-package io.github.fablabsmc.fablabs.api.screenhandler.v1.client;
+package io.github.fablabsmc.fablabs.api.client.screenhandler.v1;
 
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;

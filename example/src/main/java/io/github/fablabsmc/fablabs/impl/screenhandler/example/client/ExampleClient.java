@@ -1,6 +1,6 @@
 package io.github.fablabsmc.fablabs.impl.screenhandler.example.client;
 
-import io.github.fablabsmc.fablabs.api.screenhandler.v1.client.FabricHandledScreens;
+import io.github.fablabsmc.fablabs.api.client.screenhandler.v1.FabricHandledScreens;
 import io.github.fablabsmc.fablabs.impl.screenhandler.example.Example;
 import io.github.fablabsmc.fablabs.impl.screenhandler.example.screen.BoxScreenHandler;
 import io.github.fablabsmc.fablabs.impl.screenhandler.example.screen.PositionedBagScreenHandler;
