@@ -13,7 +13,7 @@ import net.fabricmc.api.Environment;
 
 /**
  * An API for registering screens that represent screen handlers on the client.
- * Exposes vanilla's private {@link HandledScreens#register} to modders as {@link #register}.
+ * Exposes vanilla's private {@link HandledScreens#register HandledScreens.register()} to modders as {@link #register FabricHandledScreens.register()}.
  *
  * <h2>Example</h2>
  * <pre>
