@@ -1,5 +1,6 @@
 package io.github.fablabsmc.fablabs.api.screenhandler.v1;
 
+import io.github.fablabsmc.fablabs.api.client.screenhandler.v1.ScreenRegistry;
 import io.github.fablabsmc.fablabs.impl.screenhandler.ExtendedScreenHandlerType;
 
 import net.minecraft.entity.player.PlayerInventory;
@@ -50,10 +51,10 @@ import net.fabricmc.api.Environment;
  * }
  * </pre>
  *
- * @see io.github.fablabsmc.fablabs.api.client.screenhandler.v1.FabricHandledScreens registering screens for screen handlers
+ * @see ScreenRegistry registering screens for screen handlers
  */
-public final class FabricScreenHandlerTypes {
-	private FabricScreenHandlerTypes() {
+public final class ScreenHandlerRegistry {
+	private ScreenHandlerRegistry() {
 	}
 
 	/**
