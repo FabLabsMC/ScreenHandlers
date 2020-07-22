@@ -11,4 +11,4 @@
 
 This is an experimental `ContainerType`/`ScreenHandlerType`-based replacement for `fabric-containers-v0`. Fab Labs projects are typically experimental API drafts that will eventually be PR'd into [Fabric API](https://github.com/fabricmc/fabric). As such, this project is structured around Fabric API, along with its checkstyles and versioning system.
 
-**This project has been merged into Fabric API!** Please don't use this repo for anything anymore.
+[**This project has been merged into Fabric API!**](https://github.com/FabricMC/fabric/pull/584) Please don't use this repo for anything anymore.
