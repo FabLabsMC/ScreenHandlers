@@ -10,3 +10,5 @@
 **This mod is open source and under a permissive license.** As such, it can be included in any modpack on any platform without prior permission. We appreciate hearing about people using our mods, but you do not need to ask to use them. See the [LICENSE file](LICENSE) for more details.
 
 This is an experimental `ContainerType`/`ScreenHandlerType`-based replacement for `fabric-containers-v0`. Fab Labs projects are typically experimental API drafts that will eventually be PR'd into [Fabric API](https://github.com/fabricmc/fabric). As such, this project is structured around Fabric API, along with its checkstyles and versioning system.
+
+**This project has been merged into Fabric API!** Please don't use this repo for anything anymore.
